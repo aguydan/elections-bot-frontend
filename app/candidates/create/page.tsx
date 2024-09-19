@@ -1,4 +1,5 @@
 import CandidateForm from '@/components/form/candidate-form';
+import { candidateScoreNames } from '@/lang/constants';
 import { candidateSchema } from '@/schema/candidate';
 import { z } from 'zod';
 
@@ -11,18 +12,12 @@ export default function Page() {
     party: null,
     image_url: null,
     score: Object.fromEntries(
-      Object.entries(candidateSchema).map((entry) => [entry[0], 0])
+      Object.entries(candidateScoreNames).map((entry) => [entry[0], 0])
     ),
     //should be done entirely on the server
     // created_at: null,
     // updated_at: null,
   };
-
-  const parsed = candidateSchema.safeParse(data);
-
-  if (!parsed.success) {
-    throw Error(JSON.stringify({ issues: parsed.error.issues }));
-  }
 
   const onDataAction = async (data: z.infer<typeof candidateSchema>) => {
     'use server';

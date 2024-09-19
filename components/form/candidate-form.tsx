@@ -59,6 +59,11 @@ export default function CandidateForm({
             {...form.getInputProps('color')}
           />
           <TextInput
+            label="Origin"
+            key={form.key('origin')}
+            {...form.getInputProps('origin')}
+          />
+          <TextInput
             label="Running mate"
             key={form.key('running_mate')}
             {...form.getInputProps('running_mate')}

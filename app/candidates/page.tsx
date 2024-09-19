@@ -1,15 +1,14 @@
+import FixedCoverImage from '@/components/ui/fixed-cover-image';
 import { candidateSchema } from '@/schema/candidate';
 import {
   Badge,
   Card,
   CardSection,
-  Image,
   Pagination,
   SimpleGrid,
   Stack,
   Text,
 } from '@mantine/core';
-import NextImage from 'next/image';
 import Link from 'next/link';
 import { z } from 'zod';
 
@@ -29,18 +28,8 @@ export default async function Page() {
             component={Link}
           >
             <CardSection>
-              <Image
-                w={200}
-                height={200}
-                width={200}
-                src={
-                  candidate.image_url
-                    ? 'http://localhost:3001/uploads/' + candidate.image_url
-                    : 'https://placehold.co/200x200.jpg'
-                }
-                fallbackSrc="https://placehold.co/200x200.jpg"
-                alt="Candidate portrait"
-                component={NextImage}
+              <FixedCoverImage
+                src={'http://localhost:3001/uploads/' + candidate.image_url}
               />
             </CardSection>
             <Text fw={500}>{candidate.name}</Text>

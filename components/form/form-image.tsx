@@ -5,7 +5,6 @@ import { UseFormReturnType } from '@mantine/form';
 export default function FormImage({ form }: { form: UseFormReturnType<any> }) {
   const handleUpload = async (file: File | null) => {
     if (!file) {
-      //if image file is already present it doesn't change
       form.setFieldValue('image_url', '');
       return;
     }
