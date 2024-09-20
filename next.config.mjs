@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
-import { createRequire } from 'module';
 
-const require = createRequire(import.meta.url);
-const Config = require('./config/config.json');
+import fs from 'fs';
+
+const Config = JSON.parse(
+  fs.readFileSync(new URL('./config/config.json', import.meta.url))
+);
 
 const nextConfig = {
   images: {
@@ -17,7 +19,7 @@ const nextConfig = {
         protocol: Config.api.protocol,
         hostname: Config.api.hostname,
         port: Config.api.port,
-        pathname: `/${Config.api.pathname}/**`,
+        pathname: `/${Config.api.uploadsDir}/**`,
       },
     ],
   },

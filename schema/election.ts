@@ -21,8 +21,8 @@ export const electionSchema = z.object({
     .number()
     .positive({ message: 'Nonpositive numbers are not allowed' })
     .lte(100)
-    .nullable()
-    .or(z.literal('')),
+    .nullable(),
+  flag_url: z.string().nullable(),
   created_at: z.string().datetime().optional(),
   updated_at: z.string().datetime().nullish(),
 });

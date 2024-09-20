@@ -1,11 +1,21 @@
 import { FileInput, Stack } from '@mantine/core';
-import CoverImage from '../ui/cover-image';
 import { UseFormReturnType } from '@mantine/form';
+import { ReactNode } from 'react';
 
-export default function FormImage({ form }: { form: UseFormReturnType<any> }) {
+export default function FormImage({
+  form,
+  label,
+  fieldName,
+  children,
+}: {
+  form: UseFormReturnType<any>;
+  label: string;
+  fieldName: string;
+  children: ReactNode;
+}) {
   const handleUpload = async (file: File | null) => {
     if (!file) {
-      form.setFieldValue('image_url', '');
+      form.setFieldValue(fieldName, '');
       return;
     }
 
@@ -23,7 +33,7 @@ export default function FormImage({ form }: { form: UseFormReturnType<any> }) {
       const data = await response.json();
 
       console.log(data);
-      form.setFieldValue('image_url', data.file.filename);
+      form.setFieldValue(fieldName, data.file.filename);
     } catch (error) {
       console.log(error);
     }
@@ -31,12 +41,10 @@ export default function FormImage({ form }: { form: UseFormReturnType<any> }) {
 
   return (
     <Stack>
-      <CoverImage
-        src={`http://localhost:3001/uploads/${form.getValues().image_url}`}
-      />
+      {children}
       <FileInput
         onChange={handleUpload}
-        label="Upload portrait"
+        label={label}
         placeholder=".jpg/.png"
       />
     </Stack>

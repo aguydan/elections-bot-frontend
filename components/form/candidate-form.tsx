@@ -17,6 +17,8 @@ import { candidateScoreNames } from '@/lang/constants';
 import { z } from 'zod';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
+import CoverImage from '../ui/cover-image';
+import { UPLOADS_PATH } from '@/constants/api';
 
 export default function CandidateForm({
   initialValues,
@@ -43,7 +45,14 @@ export default function CandidateForm({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Group align="flex-start" gap="xl">
-        <FormImage form={form} />
+        <FormImage form={form} fieldName="image_url" label="Upload portrait">
+          <CoverImage
+            src={`${UPLOADS_PATH}/${form.getValues().image_url}`}
+            w="12rem"
+            h="16rem"
+            alt="Candidate portrait"
+          />
+        </FormImage>
         <Stack flex={1}>
           <TextInput
             label="Name"

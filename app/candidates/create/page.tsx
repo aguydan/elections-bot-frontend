@@ -23,7 +23,6 @@ export default function Page() {
     'use server';
 
     const parsed = candidateSchema.safeParse(data);
-
     if (!parsed.success) {
       return {
         message: 'Invalid data',

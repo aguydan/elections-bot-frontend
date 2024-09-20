@@ -1,32 +1,38 @@
 import ScoreCard from '@/components/candidate/score-card';
 import CoverImage from '@/components/ui/cover-image';
-import { candidateScoreNames } from '@/lang/constants';
+import { API_PATH, UPLOADS_PATH } from '@/constants/api';
 import { candidateSchema } from '@/schema/candidate';
 import {
   Button,
   ColorSwatch,
   Divider,
   Flex,
-  Grid,
   Group,
-  Paper,
   SimpleGrid,
   Stack,
   Text,
   Title,
 } from '@mantine/core';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const response = await fetch('http://localhost:3001/candidates/' + params.id);
+  const response = await fetch(`${API_PATH}/candidates/${params.id}`);
   const candidate = (await response.json()) as z.infer<typeof candidateSchema>;
+
+  if (!response.ok) {
+    return notFound();
+  }
 
   return (
     <Stack>
       <Group align="flex-start" gap="xl">
         <CoverImage
-          src={`http://localhost:3001/uploads/${candidate.image_url}`}
+          w="12rem"
+          h="16rem"
+          alt="Candidate portrait"
+          src={`${UPLOADS_PATH}/${candidate.image_url}`}
         />
         <Stack flex={1} gap="xs">
           <Group>
