@@ -1,4 +1,4 @@
-import { FileInput, Stack } from '@mantine/core';
+import { FileInput, Stack, StackProps } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { ReactNode } from 'react';
 
@@ -7,12 +7,13 @@ export default function FormImage({
   label,
   fieldName,
   children,
+  ...rest
 }: {
   form: UseFormReturnType<any>;
   label: string;
   fieldName: string;
   children: ReactNode;
-}) {
+} & StackProps) {
   const handleUpload = async (file: File | null) => {
     if (!file) {
       form.setFieldValue(fieldName, '');
@@ -40,7 +41,7 @@ export default function FormImage({
   };
 
   return (
-    <Stack>
+    <Stack {...rest}>
       {children}
       <FileInput
         onChange={handleUpload}

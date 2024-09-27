@@ -45,7 +45,12 @@ export default function CandidateForm({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Group align="flex-start" gap="xl">
-        <FormImage form={form} fieldName="image_url" label="Upload portrait">
+        <FormImage
+          w="12rem"
+          form={form}
+          fieldName="image_url"
+          label="Upload portrait"
+        >
           <CoverImage
             src={`${UPLOADS_PATH}/${form.getValues().image_url}`}
             w="12rem"

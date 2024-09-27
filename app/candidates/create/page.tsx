@@ -1,6 +1,8 @@
 import CandidateForm from '@/components/form/candidate-form';
+import { API_PATH } from '@/constants/api';
 import { candidateScoreNames } from '@/lang/constants';
 import { candidateSchema } from '@/schema/candidate';
+import { HTTPService } from '@/services/http-service';
 import { z } from 'zod';
 
 export default function Page() {
@@ -14,9 +16,6 @@ export default function Page() {
     score: Object.fromEntries(
       Object.entries(candidateScoreNames).map((entry) => [entry[0], 0])
     ),
-    //should be done entirely on the server
-    // created_at: null,
-    // updated_at: null,
   };
 
   const onDataAction = async (data: z.infer<typeof candidateSchema>) => {
@@ -31,13 +30,7 @@ export default function Page() {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/candidates/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await HTTPService.post(`${API_PATH}/candidates`, data);
 
       if (!response.ok) throw response;
 

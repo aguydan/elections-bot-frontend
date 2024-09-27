@@ -1,27 +1,43 @@
 import FixedCoverImage from '@/components/ui/fixed-cover-image';
+import { API_PATH } from '@/constants/api';
 import { candidateSchema } from '@/schema/candidate';
 import {
   Badge,
   Card,
   CardSection,
   Pagination,
+  Paper,
   SimpleGrid,
   Stack,
   Text,
 } from '@mantine/core';
 import Link from 'next/link';
+import { FaPersonCirclePlus } from 'react-icons/fa6';
 import { z } from 'zod';
 
 export default async function Page() {
-  const response = await fetch('http://localhost:3001/candidates');
+  const response = await fetch(`${API_PATH}/candidates`);
   const data = (await response.json()) as z.infer<typeof candidateSchema>[];
 
   return (
     <Stack align="center">
       <SimpleGrid mt="2rem" cols={5} spacing="xl">
+        <Paper
+          c="yellow"
+          component={Link}
+          href={'candidates/create'}
+          bd="dashed"
+        >
+          <Stack align="center" h="100%" justify="center">
+            <FaPersonCirclePlus style={{ width: '5rem', height: '5rem' }} />
+            <Text fw={600}>Create candidate</Text>
+          </Stack>
+        </Paper>
+
         {data.map((candidate) => (
           <Card
-            href={'/candidates/' + candidate.id}
+            key={candidate.id}
+            href={`/candidates/${candidate.id}`}
             shadow="sm"
             withBorder
             padding="lg"
