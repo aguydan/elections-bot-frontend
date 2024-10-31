@@ -22,13 +22,10 @@ import { UPLOADS_PATH } from '@/constants/api';
 
 export default function CandidateForm({
   initialValues,
-  onDataAction,
+  action,
 }: {
   initialValues: z.infer<typeof candidateSchema>;
-  onDataAction: (data: z.infer<typeof candidateSchema>) => Promise<{
-    message: string;
-    issues?: string[];
-  }>;
+  action: (data: z.infer<typeof candidateSchema>) => Promise<{ error: any }>;
 }) {
   const router = useRouter();
 
@@ -39,7 +36,7 @@ export default function CandidateForm({
   });
 
   const handleSubmit = async (data: typeof form.values) => {
-    console.log(await onDataAction(data));
+    console.log(await action(data));
   };
 
   return (

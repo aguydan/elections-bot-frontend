@@ -19,13 +19,10 @@ import { UPLOADS_PATH } from '@/constants/api';
 
 export default function ElectionForm({
   initialValues,
-  onDataAction,
+  action,
 }: {
   initialValues: z.infer<typeof electionSchema>;
-  onDataAction: (data: z.infer<typeof electionSchema>) => Promise<{
-    message: string;
-    issues?: string[];
-  }>;
+  action: (data: z.infer<typeof electionSchema>) => Promise<{ error: any }>;
 }) {
   const router = useRouter();
 
@@ -36,7 +33,7 @@ export default function ElectionForm({
   });
 
   const handleSubmit = async (data: typeof form.values) => {
-    console.log(await onDataAction(data));
+    console.log(await action(data));
   };
 
   return (
@@ -66,6 +63,7 @@ export default function ElectionForm({
           />
           <TextInput
             label="Country"
+            withAsterisk
             description="The country where the elections take place"
             key={form.key('country')}
             {...form.getInputProps('country')}

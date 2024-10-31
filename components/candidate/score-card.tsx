@@ -25,7 +25,7 @@ export default function ScoreCard({
         >
           {score}
         </Text>
-        <Text>
+        <Text c={luminance(adjustedColor) > 0.3 ? '#000000' : '#ffffff'}>
           {candidateScoreNames[name as keyof typeof candidateScoreNames]}
         </Text>
       </Stack>
