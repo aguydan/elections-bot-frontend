@@ -1,0 +1,21 @@
+.root {
+  position: relative;
+
+  * {
+    position: relative;
+  }
+}
+
+.root::before {
+  position: absolute;
+  left: -0.8rem;
+  top: 8%;
+  content: '';
+  height: 120%;
+  width: 100%;
+  background: linear-gradient(to right, white, rgba(255, 255, 255, 0) 80%);
+  border-radius: 0.6rem;
+  opacity: 0.51;
+  display: block;
+  transform: rotate(var(--gradient-box-angle));
+}

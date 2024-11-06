@@ -1,0 +1,60 @@
+.root {
+  position: relative;
+  z-index: 3;
+}
+
+.parent {
+  background-color: #b78d64;
+  min-width: 46rem;
+  border-radius: 1.4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.parent::before {
+  content: '';
+  position: absolute;
+  width: 1154px;
+  height: 621px;
+  left: -25rem;
+  top: 2rem;
+  z-index: 1;
+  background: radial-gradient(
+      ellipse closest-side,
+      #ffc489 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    radial-gradient(
+      ellipse closest-side,
+      #ffffff 0%,
+      rgba(255, 255, 255, 0) 80%
+    );
+  transform: rotate(-25.7deg);
+}
+
+.parent::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 1.2rem;
+  background: radial-gradient(
+      circle at bottom right,
+      #7c5b24 0%,
+      rgba(255, 255, 255, 0) 70%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      #ffffff 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+}
+
+.backdrop {
+  width: 100%;
+  position: absolute;
+  background-position: top center;
+  background-repeat: no-repeat;
+  opacity: 0.28;
+  inset: 0;
+}

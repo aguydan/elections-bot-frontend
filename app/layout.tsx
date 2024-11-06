@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={raleway.className}>
+    <html lang="en" className={`${raleway.className}`}>
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
