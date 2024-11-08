@@ -3,6 +3,7 @@
 import {
   Box,
   BoxProps,
+  ElementProps,
   PaperBaseProps,
   polymorphicFactory,
   PolymorphicFactory,
@@ -11,7 +12,10 @@ import {
 } from '@mantine/core';
 import classes from './info-paper.module.css';
 
-export interface InfoPaperProps extends BoxProps, PaperBaseProps {
+export interface InfoPaperProps
+  extends BoxProps,
+    PaperBaseProps,
+    ElementProps<'div'> {
   bgSrc?: string;
 }
 
@@ -28,7 +32,7 @@ const defaultProps: InfoPaperProps = {
 
 export const InfoPaper = polymorphicFactory<InfoPaperFactory>((_props, ref) => {
   const props = useProps('InfoPaper', defaultProps, _props);
-  const { className, style, bgSrc, ...others } = props;
+  const { className, style, bgSrc, children, ...others } = props;
 
   const getStyles = useStyles<InfoPaperFactory>({
     name: 'InfoPaper',
@@ -39,12 +43,12 @@ export const InfoPaper = polymorphicFactory<InfoPaperFactory>((_props, ref) => {
   });
 
   return (
-    <Box {...getStyles('parent')}>
+    <Box {...getStyles('parent')} ref={ref} {...others}>
       <Box
         {...getStyles('backdrop')}
         style={{ backgroundImage: `url(${bgSrc})` }}
       />
-      <Box ref={ref} {...getStyles('root')} {...others} />
+      <Box {...getStyles('root')}>{children}</Box>
     </Box>
   );
 });

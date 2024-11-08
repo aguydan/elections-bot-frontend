@@ -5,7 +5,7 @@
 
 .parent {
   background-color: #b78d64;
-  min-width: 46rem;
+  width: 46rem;
   border-radius: 1.4rem;
   position: relative;
   overflow: hidden;
@@ -20,16 +20,12 @@
   top: 2rem;
   z-index: 1;
   background: radial-gradient(
-      ellipse closest-side,
+      closest-side,
       #ffc489 0%,
       rgba(255, 255, 255, 0) 100%
     ),
-    radial-gradient(
-      ellipse closest-side,
-      #ffffff 0%,
-      rgba(255, 255, 255, 0) 80%
-    );
-  transform: rotate(-25.7deg);
+    radial-gradient(closest-side, #ffffff 0%, rgba(255, 255, 255, 0) 80%);
+  transform: rotate(-26deg);
 }
 
 .parent::after {
@@ -54,6 +50,7 @@
   width: 100%;
   position: absolute;
   background-position: top center;
+  background-size: 140%;
   background-repeat: no-repeat;
   opacity: 0.28;
   inset: 0;

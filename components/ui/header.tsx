@@ -19,6 +19,9 @@ export default function Header() {
             <Button component={Link} href="/elections" variant="subtle">
               Elections
             </Button>
+            <Button component={Link} href="/results" variant="subtle">
+              Results
+            </Button>
           </Group>
         </Group>
       </Center>

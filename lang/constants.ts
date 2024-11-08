@@ -1,3 +1,5 @@
+//rename program relevance to policies relevance!!!!
+
 export const candidateScoreNames = {
   gdp: 'GDP',
   party_relevance: 'Party relevance',
@@ -11,4 +13,19 @@ export const candidateScoreNames = {
   devout_support: 'Devout support',
   capital_favorite: "The capital's favorite",
   propaganda_campaign: 'Propaganda campaign',
+};
+
+export const candidateScoreEmojis = {
+  gdp: '📈',
+  party_relevance: '🚩',
+  program_relevance: '🗞️',
+  charisma: '🎭',
+  popularity: '🗣️',
+  landowners_support: '🏘️',
+  workers_support: '🔨',
+  intelligentsia_support: '🤓',
+  army_support: '🪖',
+  devout_support: '🙏',
+  capital_favorite: '💖',
+  propaganda_campaign: '📢',
 };

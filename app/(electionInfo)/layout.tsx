@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 export default function CandidateLayout({ children }: { children: ReactNode }) {
   return (
     <Center>
-      <InfoPaper>{children}</InfoPaper>
+      <InfoPaper mt="3rem">{children}</InfoPaper>
     </Center>
   );
 }

@@ -13,13 +13,16 @@ import { AngledLineProps } from './angled-line';
 import classes from './gradient-decoration.module.css';
 
 export type GradientDecorationCssVariables = {
-  root: '--gradient-box-angle';
+  root: '--gradient-box-angle' | '--gradient-box-left' | '--gradient-box-top';
 };
 
 export interface GradientDecorationProps
   extends AngledLineProps,
     StylesApiProps<GradientDecorationFactory>,
-    ElementProps<'div'> {}
+    ElementProps<'div'> {
+  gradientTop?: string | number;
+  gradientLeft?: string | number;
+}
 
 export type GradientDecorationFactory = Factory<{
   props: GradientDecorationProps;
@@ -29,10 +32,14 @@ export type GradientDecorationFactory = Factory<{
 }>;
 
 const varsResolver = createVarsResolver<GradientDecorationFactory>(
-  (theme, { angle }) => {
+  (theme, { angle, gradientTop, gradientLeft }) => {
     return {
       root: {
-        '--gradient-box-angle': angle ? angle + 'deg' : 'unset',
+        '--gradient-box-angle': angle ? angle + 'deg' : '0deg',
+        '--gradient-box-left': gradientLeft
+          ? gradientLeft.toString()
+          : '-0.8rem',
+        '--gradient-box-top': gradientTop ? gradientTop.toString() : 'unset',
       },
     };
   },
@@ -40,7 +47,15 @@ const varsResolver = createVarsResolver<GradientDecorationFactory>(
 
 export const GradientDecoration = (_props: GradientDecorationProps) => {
   const props = useProps('GradientDecoration', {}, _props);
-  const { className, style, angle, vars, children, ...others } = props;
+  const {
+    className,
+    style,
+    vars,
+    children,
+    gradientTop,
+    gradientLeft,
+    ...others
+  } = props;
 
   const getStyles = useStyles<GradientDecorationFactory>({
     name: 'GradientDecoration',
