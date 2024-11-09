@@ -6,9 +6,25 @@
     ),
     radial-gradient(
       circle at 30% 20%,
-      hsl(270, 60%, 67%) 0,
-      rgba(0, 0, 0, 0.4) 70%
+      var(--card-primary-color) 0,
+      var(--card-secondary-color) 70%
     );
   color: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  /* very laggy for some reason */
+  /*   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px); */
+}
+
+.score {
+  margin-top: 1.2rem;
+  text-align: right;
+  transition: margin-top 0.6s;
+}
+
+.root:hover {
+  .score {
+    margin-top: 4rem;
+  }
 }

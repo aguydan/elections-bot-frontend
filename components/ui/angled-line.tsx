@@ -26,6 +26,7 @@ const defaultProps: AngledLineProps = {
   h: '2px',
 };
 
+//should be fine as a normal component, no need to make it mantine compatible
 export const AngledLine = factory<AngledLineFactory>((_props, ref) => {
   const props = useProps('AngledLine', defaultProps, _props);
   const { className, style, angle, w, h, ...others } = props;

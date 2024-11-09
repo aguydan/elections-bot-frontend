@@ -1,7 +1,7 @@
 'use client';
 
 import { candidateScoreEmojis, candidateScoreNames } from '@/lang/constants';
-import { Box, Flex, lighten, luminance, Paper, Text } from '@mantine/core';
+import { darken, Flex, lighten, luminance, Paper, Text } from '@mantine/core';
 import classes from './score-card.module.css';
 import { inter } from '@/lib/fonts';
 
@@ -12,7 +12,16 @@ export default function ScoreCard({
   label: string;
   score: number;
 }) {
-  //   const adjustedColor = lighten(color, score);
+  const threshold = 0.2;
+
+  const primaryColor =
+    score > threshold
+      ? lighten('#ab78dd', score - threshold)
+      : darken('#ab78dd', threshold - score);
+  const secondaryColor =
+    score > threshold
+      ? lighten('#00000066', score - threshold)
+      : darken('#00000066', threshold - score);
 
   return (
     <Paper
@@ -20,7 +29,11 @@ export default function ScoreCard({
       flex={'1 1 auto'}
       p="0.8rem 1.4rem"
       radius="1.4rem"
-      style={{ transform: `rotate(${Math.random() * 5}deg)` }}
+      style={{
+        '--card-primary-color': primaryColor,
+        '--card-secondary-color': secondaryColor,
+        transform: `rotate(${Math.random() * 5}deg)`,
+      }}
     >
       <Flex gap="0.6rem">
         <Text>
@@ -31,8 +44,7 @@ export default function ScoreCard({
         </Text>
       </Flex>
       <Text
-        style={{ textAlign: 'right' }}
-        mt="1.2rem"
+        className={classes.score}
         ff={inter.style.fontFamily}
         lh="2.8rem"
         fz="2.8rem"
@@ -41,20 +53,5 @@ export default function ScoreCard({
         {score}
       </Text>
     </Paper>
-
-    /*     <Paper classNames={classes} flex={1} p="lg" radius="lg" bg={adjustedColor}>
-      <Stack align="center" gap={0}>
-        <Text
-          c={luminance(adjustedColor) > 0.3 ? '#000000' : '#ffffff'}
-          size="xl"
-          fw={800}
-        >
-          {score}
-        </Text>
-        <Text c={luminance(adjustedColor) > 0.3 ? '#000000' : '#ffffff'}>
-          {candidateScoreNames[name as keyof typeof candidateScoreNames]}
-        </Text>
-      </Stack>
-    </Paper> */
   );
 }

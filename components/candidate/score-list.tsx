@@ -20,7 +20,13 @@ export default function ScoreList({
   }, []);
 
   return (
-    <Flex px="1rem" gap="0.4rem" wrap="wrap" style={{ zIndex: 10 }}>
+    <Flex
+      px="1rem"
+      gap="0.4rem"
+      wrap="wrap"
+      align="start"
+      style={{ zIndex: 10 }}
+    >
       {scores}
     </Flex>
   );

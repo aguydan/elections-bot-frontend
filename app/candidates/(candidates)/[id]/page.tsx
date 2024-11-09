@@ -19,6 +19,7 @@ import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
 // FIX THE BLUR ISSUE
+// FIX the COVER IMAGE
 
 export default async function Page({ params }: { params: { id: string } }) {
   const response = await fetch(`${API_PATH}/candidates/${params.id}`);
@@ -29,8 +30,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <Stack>
-      <Group p="3.5rem 3.5rem 0" align="stretch" gap="xl">
+    <Stack c="#000000">
+      <Group p="3.5rem 3.5rem 0" mb="1rem" align="stretch" gap="xl">
         <CoverImage
           w="12rem"
           alt="Candidate portrait"
@@ -48,24 +49,22 @@ export default async function Page({ params }: { params: { id: string } }) {
               style={{ borderRadius: '100%' }}
             />
             <GradientDecoration angle={5} gradientTop="-0.6rem" mt="1.4rem">
-              <Title fw="800" fz="2.2rem" c="black" maw="30rem">
+              <Title fw={800} fz="2.2rem" maw="30rem">
                 {candidate.name}
               </Title>
             </GradientDecoration>
           </Group>
-          <Flex align="center" gap={4} mt="1rem">
+          <Flex align="center" gap={4} mt="1.4rem">
             <Text c="#716262" fw={700}>
               ORIGIN •
             </Text>
-            <Text c="black" fw="800">
-              {candidate.origin ? candidate.origin : '?'}
-            </Text>
+            <Text fw={800}>{candidate.origin ? candidate.origin : '?'}</Text>
           </Flex>
           <Box>
             <Text c="#716262" fw={700}>
               RUNNING MATE
             </Text>
-            <Text c="black" fw="800">
+            <Text fw={800}>
               {candidate.running_mate ? candidate.running_mate : 'No one'}
             </Text>
           </Box>
@@ -73,7 +72,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <Text c="#716262" fw={700}>
               POLITICAL PARTY
             </Text>
-            <Text c="black" fw="800">
+            <Text fw={800}>
               {candidate.party ? candidate.party : 'Independent'}
             </Text>
           </Box>
@@ -92,7 +91,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </Stack>
       </Stack>
       <GradientDecoration angle={1} gradientTop="-0.34rem" m="0 3.5rem 2.5rem">
-        <Text c="black" fw={600} fz="lg">
+        <Text fw={600} fz="lg">
           Candidate score • Total 0.78
         </Text>
       </GradientDecoration>
