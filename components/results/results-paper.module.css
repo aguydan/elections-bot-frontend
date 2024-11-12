@@ -1,0 +1,23 @@
+.parent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle at 37% 32%,
+      #ffc489 0,
+      rgba(255, 255, 255, 0) 62%
+    ),
+    radial-gradient(circle at 37% 32%, white 0, rgba(255, 255, 255, 0) 62%);
+}
+
+.parent::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle at 62% 104%,
+      #6d4b1a 0,
+      rgba(255, 255, 255, 0) 60%
+    ),
+    radial-gradient(circle at 62% 104%, #737373 0, rgba(255, 255, 255, 0) 60%);
+}

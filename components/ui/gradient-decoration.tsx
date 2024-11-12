@@ -2,26 +2,41 @@
 
 import {
   Box,
+  BoxProps,
   createVarsResolver,
   ElementProps,
   Factory,
+  getRadius,
+  getSize,
+  MantineSize,
+  PaperBaseProps,
+  StyleProp,
   StylesApiProps,
   useProps,
   useStyles,
 } from '@mantine/core';
-import { AngledLineProps } from './angled-line';
 import classes from './gradient-decoration.module.css';
 
 export type GradientDecorationCssVariables = {
-  root: '--gradient-box-angle' | '--gradient-box-left' | '--gradient-box-top';
+  root:
+    | '--gradient-angle'
+    | '--gradient-left'
+    | '--gradient-top'
+    | '--gradient-add-height'
+    | '--gradient-radius'
+    | '--gradient-width';
 };
 
 export interface GradientDecorationProps
-  extends AngledLineProps,
+  extends BoxProps,
+    PaperBaseProps,
     StylesApiProps<GradientDecorationFactory>,
     ElementProps<'div'> {
-  gradientTop?: string | number;
-  gradientLeft?: string | number;
+  angle?: string | number;
+  gradientTop?: StyleProp<MantineSize | (string & {}) | number>;
+  gradientLeft?: StyleProp<MantineSize | (string & {}) | number>;
+  gradientAddHeight?: StyleProp<MantineSize | (string & {}) | number>;
+  gradientWidth?: StyleProp<MantineSize | (string & {}) | number>;
 }
 
 export type GradientDecorationFactory = Factory<{
@@ -32,14 +47,27 @@ export type GradientDecorationFactory = Factory<{
 }>;
 
 const varsResolver = createVarsResolver<GradientDecorationFactory>(
-  (theme, { angle, gradientTop, gradientLeft }) => {
+  (
+    theme,
+    {
+      angle,
+      radius,
+      gradientTop,
+      gradientLeft,
+      gradientAddHeight,
+      gradientWidth,
+    },
+  ) => {
     return {
       root: {
-        '--gradient-box-angle': angle ? angle + 'deg' : '0deg',
-        '--gradient-box-left': gradientLeft
-          ? gradientLeft.toString()
-          : '-0.8rem',
-        '--gradient-box-top': gradientTop ? gradientTop.toString() : 'unset',
+        '--gradient-angle': angle ? angle + 'deg' : '0deg',
+        '--gradient-left': gradientLeft ? getSize(gradientLeft) : '-0.8rem',
+        '--gradient-top': gradientTop ? getSize(gradientTop) : undefined,
+        '--gradient-add-height': gradientAddHeight
+          ? getSize(gradientAddHeight)
+          : '0.6rem',
+        '--gradient-radius': radius ? getRadius(radius) : '0.6rem',
+        '--gradient-width': gradientWidth ? getRadius(gradientWidth) : '30rem',
       },
     };
   },
@@ -54,6 +82,7 @@ export const GradientDecoration = (_props: GradientDecorationProps) => {
     children,
     gradientTop,
     gradientLeft,
+    gradientAddHeight,
     ...others
   } = props;
 

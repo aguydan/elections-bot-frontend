@@ -1,0 +1,34 @@
+.parent::before {
+  content: '';
+  position: absolute;
+  width: 1154px;
+  height: 621px;
+  left: -25rem;
+  top: 2rem;
+  z-index: 1;
+  background: radial-gradient(
+      closest-side,
+      #ffc489 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    radial-gradient(closest-side, white 0%, rgba(255, 255, 255, 0) 80%);
+  transform: rotate(-26deg);
+}
+
+.parent::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 1.2rem;
+  background: radial-gradient(
+      circle at bottom right,
+      #7c5b24 0%,
+      rgba(255, 255, 255, 0) 70%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      white 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+}

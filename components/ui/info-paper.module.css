@@ -6,44 +6,13 @@
 .parent {
   background-color: #b78d64;
   width: 46rem;
-  border-radius: 1.4rem;
+  border-radius: var(--paper-radius);
   position: relative;
   overflow: hidden;
-}
 
-.parent::before {
-  content: '';
-  position: absolute;
-  width: 1154px;
-  height: 621px;
-  left: -25rem;
-  top: 2rem;
-  z-index: 1;
-  background: radial-gradient(
-      closest-side,
-      #ffc489 0%,
-      rgba(255, 255, 255, 0) 100%
-    ),
-    radial-gradient(closest-side, #ffffff 0%, rgba(255, 255, 255, 0) 80%);
-  transform: rotate(-26deg);
-}
-
-.parent::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: 1.2rem;
-  background: radial-gradient(
-      circle at bottom right,
-      #7c5b24 0%,
-      rgba(255, 255, 255, 0) 70%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      #ffffff 0%,
-      rgba(255, 255, 255, 0) 70%
-    );
+  /* Fixes overflow hidden and border radius artifacts */
+  mask-image: radial-gradient(white, black);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .backdrop {

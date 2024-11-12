@@ -1,35 +1,44 @@
 'use client';
 
 import NextImage from 'next/image';
-import { Box, Image, px } from '@mantine/core';
+import { Image, Paper, PaperProps, px } from '@mantine/core';
 import { useEffect, useState } from 'react';
 
-export default function CoverImage(props: {
-  src: string | null;
-  w: string;
-  h: string;
-  alt: string;
-}) {
+export default function CoverImage(
+  props: {
+    src: string;
+    w: string;
+    h: string;
+    alt: string;
+  } & PaperProps,
+) {
   const [src, setSrc] = useState(props.src);
 
   useEffect(() => {
     setSrc(props.src);
   }, [props.src]);
 
+  const { w, h, alt, radius, ...others } = props;
+
   return (
-    <Box pos="relative" w={props.w} h={props.h}>
+    <Paper
+      bg="transparent"
+      pos="relative"
+      w={w}
+      h={h}
+      radius={radius}
+      {...others}
+    >
       <Image
         src={src}
-        alt={props.alt}
+        alt={alt}
+        radius={radius}
         component={NextImage}
-        radius="md"
         fill
         priority
         style={{ overflowClipMargin: 'unset' }}
-        onError={() =>
-          setSrc(`https://placehold.co/${px(props.w)}x${px(props.h)}.png`)
-        }
+        onError={() => setSrc(`https://placehold.co/${px(w)}x${px(h)}.png`)}
       />
-    </Box>
+    </Paper>
   );
 }

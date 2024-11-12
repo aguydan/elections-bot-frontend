@@ -33,6 +33,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     <Stack c="#000000">
       <Group p="3.5rem 3.5rem 0" mb="1rem" align="stretch" gap="xl">
         <CoverImage
+          radius="0.6rem"
           w="12rem"
           alt="Candidate portrait"
           src={`${UPLOADS_PATH}/${candidate.image_url}`}
