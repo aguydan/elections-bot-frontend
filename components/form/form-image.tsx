@@ -1,3 +1,4 @@
+import { UPLOADS_PATH } from '@/constants/api';
 import { FileInput, Stack, StackProps } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { ReactNode } from 'react';
@@ -7,7 +8,7 @@ export default function FormImage({
   label,
   fieldName,
   children,
-  ...rest
+  ...others
 }: {
   form: UseFormReturnType<any>;
   label: string;
@@ -24,7 +25,7 @@ export default function FormImage({
     formData.append('image', file);
 
     try {
-      const response = await fetch(`http://localhost:3001/uploads`, {
+      const response = await fetch(UPLOADS_PATH, {
         method: 'POST',
         body: formData,
       });
@@ -41,7 +42,7 @@ export default function FormImage({
   };
 
   return (
-    <Stack {...rest}>
+    <Stack {...others}>
       {children}
       <FileInput
         onChange={handleUpload}

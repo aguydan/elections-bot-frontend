@@ -1,5 +1,5 @@
 import FixedCoverImage from '@/components/ui/fixed-cover-image';
-import { API_PATH } from '@/constants/api';
+import { API_PATH, UPLOADS_PATH } from '@/constants/api';
 import { candidateSchema } from '@/schema/candidate';
 import {
   Badge,
@@ -44,9 +44,7 @@ export default async function Page() {
             component={Link}
           >
             <CardSection>
-              <FixedCoverImage
-                src={'http://localhost:3001/uploads/' + candidate.image_url}
-              />
+              <FixedCoverImage src={`${UPLOADS_PATH}/${candidate.image_url}`} />
             </CardSection>
             <Text fw={500}>{candidate.name}</Text>
             <Badge>Wales, France</Badge>

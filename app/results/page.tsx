@@ -15,10 +15,19 @@ import { InfoPaper } from '@/components/ui/info-paper';
 
 import infoPaperClasses from '@/components/results/results-paper.module.css';
 import classes from './styles.module.css';
-import { inter } from '@/lib/fonts';
-import { AngledLine } from '@/components/ui/angled-line';
+import ResultsDeck from '@/components/results/results-deck';
+import { API_PATH } from '@/constants/api';
+import { z } from 'zod';
+import { electionResultSchema } from '@/schema/election-result';
 
-export default function Page() {
+export default async function Page() {
+  const response = await fetch(`${API_PATH}/results?limit=7`);
+  const results = (await response.json()) as z.infer<
+    typeof electionResultSchema
+  >[];
+
+  results.sort((a, b) => b.percentage - a.percentage);
+
   return (
     <Center>
       {/* We should probably put both the candidate info paper and results info paper in 
@@ -62,7 +71,7 @@ export default function Page() {
             1753
           </Text>
         </Flex>
-        <Stack display="inline-flex" mt="3.4rem" ml="3rem" gap="6rem">
+        <Stack display="inline-flex" mt="3.4rem" ml="3rem" gap="6.6rem">
           <Group pos="relative" align="end">
             <GradientDecoration
               radius="1.4rem"
@@ -76,80 +85,28 @@ export default function Page() {
                 radius="1rem"
                 left="2rem"
                 className={classes.card}
-                style={{ transform: 'rotate(-4.1deg)', zIndex: 1 }}
+                style={{ transform: 'rotate(-4deg)', zIndex: 1 }}
                 src={''}
                 alt="Candidate portrait"
                 w="14rem"
                 h="20rem"
               />
             </GradientDecoration>
-            <CoverImage
-              radius="1rem"
-              className={classes.card}
-              src={''}
-              alt="Candidate portrait"
-              w="11rem"
-              h="15rem"
-            />
-            <CoverImage
-              radius="1rem"
-              className={classes.card}
-              src={''}
-              alt="Candidate portrait"
-              w="11rem"
-              h="15rem"
-            />
-            <CoverImage
-              radius="1rem"
-              className={classes.card}
-              src={''}
-              alt="Candidate portrait"
-              w="11rem"
-              h="15rem"
-            />
+            {results.slice(1, 4).map((result) => (
+              <CoverImage
+                radius="1rem"
+                className={classes.card}
+                src={''}
+                alt="Candidate portrait"
+                w="11rem"
+                h="15rem"
+              />
+            ))}
           </Group>
           <Box ml="2.6rem" pos="relative" style={{ zIndex: 2 }}>
+            <ResultsDeck results={results} />
             <Paper
-              ff={inter.style.fontFamily}
-              pos="absolute"
-              bottom="calc(100% + 0.5rem)"
-              w="17rem"
-              radius="0.8rem"
-              p="0.8rem"
-              bg="#F1E9E1"
-            >
-              <Flex align="start">
-                <Text
-                  component="span"
-                  mx="0.5rem"
-                  fw={900}
-                  fz="2.8rem"
-                  lh="3rem"
-                  style={{ textWrap: 'nowrap' }}
-                >
-                  57.56%
-                </Text>
-                <Text component="span" fz="2.6rem" lh="2.6rem">
-                  🎉
-                </Text>
-              </Flex>
-              <AngledLine angle={-1.4} w="100%" h="3px" />
-              <Stack mt="0.6rem" gap="1rem">
-                <Box>
-                  <Text lh="1rem" c="#B2A2A2">
-                    President-elect
-                  </Text>
-                  <Text fw={900}>Торфинн Торссон</Text>
-                </Box>
-                <Box>
-                  <Text lh="1rem" c="#766A6A">
-                    Единый мир, Лярмэруж
-                  </Text>
-                  <Text c="#B2A2A2">143,544,655 votes</Text>
-                </Box>
-              </Stack>
-            </Paper>
-            <Paper
+              display="flex"
               bg="transparent"
               h="1.7rem"
               radius="1rem"
@@ -158,8 +115,14 @@ export default function Page() {
                 boxShadow: '0px 0px 6.5px -1px rgba(0, 0, 0, 0.25)',
               }}
             >
-              {/* triangle after element */}
-              <Box w="57%" bg="cyan" h="100%" />
+              {results.map((result) => (
+                <Box
+                  className={classes.share}
+                  w={result.percentage + '%'}
+                  bg={result.color}
+                  h="100%"
+                />
+              ))}
             </Paper>
           </Box>
         </Stack>
