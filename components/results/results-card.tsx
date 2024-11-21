@@ -36,10 +36,9 @@ export const ResultsCard = forwardRef(
       <Paper
         {...others}
         ref={ref}
-        pos="relative"
         bottom={0}
         ff={inter.style.fontFamily}
-        w={variant == 'winner' ? '18rem' : '17rem'}
+        w="17rem"
         radius="0.8rem"
         p="0.4rem 0.8rem"
         bg="#F1E9E1"
@@ -78,7 +77,7 @@ export const ResultsCard = forwardRef(
         <Stack mt="0.6rem" gap={variant == 'winner' ? '1rem' : 0}>
           <Box>
             <Text lh="1rem" c="#B2A2A2">
-              {variant == 'winner' ? 'President-elect' : `${place}-nd place`}
+              {variant == 'winner' ? 'President-elect' : `${place} place`}
             </Text>
             <Text fw={900}>{name}</Text>
           </Box>

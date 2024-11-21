@@ -1,20 +1,31 @@
 .deck {
-  --peeking-size: calc((100% - 17rem) / 5);
-
-  display: grid;
+  display: flex;
   gap: 0.6rem;
-  grid-template-columns:
-    17rem var(--peeking-size) var(--peeking-size) var(--peeking-size)
-    var(--peeking-size) var(--peeking-size);
-  align-items: end;
-  justify-items: right;
-  justify-content: right;
-  transition: grid-template-columns 1s ease;
+  align-items: flex-end;
+
+  &:hover {
+    .cardContainer:nth-child(-n + 2) {
+      min-width: 1rem;
+    }
+  }
 }
 
-/* .card:first-child::after {
-  content: url('/static/images/triangle.svg');
-  position: absolute;
-  bottom: -1.4rem;
-  left: 40%;
-} */
+.cardContainer {
+  position: relative;
+  min-width: 1rem;
+  width: 17rem;
+  transition:
+    width 0.4s,
+    min-width 0.4s;
+  height: 10rem;
+
+  &:nth-child(-n + 2) {
+    min-width: 17rem;
+    width: 17rem;
+  }
+
+  &:hover {
+    min-width: 17rem !important;
+    width: 17rem;
+  }
+}

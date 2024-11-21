@@ -34,9 +34,9 @@ export default function CoverImage(
         alt={alt}
         radius={radius}
         component={NextImage}
+        sizes="14vw"
         fill
         priority
-        style={{ overflowClipMargin: 'unset' }}
         onError={() => setSrc(`https://placehold.co/${px(w)}x${px(h)}.png`)}
       />
     </Paper>

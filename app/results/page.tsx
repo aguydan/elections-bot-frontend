@@ -16,17 +16,15 @@ import { InfoPaper } from '@/components/ui/info-paper';
 import infoPaperClasses from '@/components/results/results-paper.module.css';
 import classes from './styles.module.css';
 import ResultsDeck from '@/components/results/results-deck';
-import { API_PATH } from '@/constants/api';
+import { API_PATH, UPLOADS_PATH } from '@/constants/api';
 import { z } from 'zod';
-import { electionResultSchema } from '@/schema/election-result';
+import { heldElectionSchema } from '@/schema/held-election';
 
 export default async function Page() {
-  const response = await fetch(`${API_PATH}/results?limit=7`);
-  const results = (await response.json()) as z.infer<
-    typeof electionResultSchema
-  >[];
-
-  results.sort((a, b) => b.percentage - a.percentage);
+  const response = await fetch(`${API_PATH}/held`, { cache: 'no-store' });
+  const heldElection = (await response.json()) as z.infer<
+    typeof heldElectionSchema
+  >;
 
   return (
     <Center>
@@ -65,13 +63,13 @@ export default async function Page() {
         </Title>
         <Flex c="#84766F" gap="0.3rem">
           <Text fw={600} fz="xl">
-            Президентские выборы во Франции •
+            {heldElection.election_name + ' •'}
           </Text>
           <Text fw={600} fz="xl">
-            1753
+            {heldElection.date}
           </Text>
         </Flex>
-        <Stack display="inline-flex" mt="3.4rem" ml="3rem" gap="6.6rem">
+        <Stack maw="50rem" mt="3.4rem" ml="3rem" gap="6.6rem">
           <Group pos="relative" align="end">
             <GradientDecoration
               radius="1.4rem"
@@ -86,17 +84,17 @@ export default async function Page() {
                 left="2rem"
                 className={classes.card}
                 style={{ transform: 'rotate(-4deg)', zIndex: 1 }}
-                src={''}
+                src={`${UPLOADS_PATH}/${heldElection.results[0].image_url}`}
                 alt="Candidate portrait"
                 w="14rem"
                 h="20rem"
               />
             </GradientDecoration>
-            {results.slice(1, 4).map((result) => (
+            {heldElection.results.slice(1, 4).map((result) => (
               <CoverImage
                 radius="1rem"
                 className={classes.card}
-                src={''}
+                src={`${UPLOADS_PATH}/${result.image_url}`}
                 alt="Candidate portrait"
                 w="11rem"
                 h="15rem"
@@ -104,7 +102,7 @@ export default async function Page() {
             ))}
           </Group>
           <Box ml="2.6rem" pos="relative" style={{ zIndex: 2 }}>
-            <ResultsDeck results={results} />
+            <ResultsDeck results={heldElection.results} />
             <Paper
               display="flex"
               bg="transparent"
@@ -115,7 +113,7 @@ export default async function Page() {
                 boxShadow: '0px 0px 6.5px -1px rgba(0, 0, 0, 0.25)',
               }}
             >
-              {results.map((result) => (
+              {heldElection.results.map((result) => (
                 <Box
                   className={classes.share}
                   w={result.percentage + '%'}
