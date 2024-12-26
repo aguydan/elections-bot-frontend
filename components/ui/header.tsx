@@ -1,17 +1,28 @@
-import { Button, Center, Group, Paper, Text } from '@mantine/core';
+import { Button, Group, Paper, Text } from '@mantine/core';
 import Link from 'next/link';
 
 export default function Header() {
   return (
-    <Paper radius="unset" shadow="sm" h="4rem" component="header">
-      <Center h="100%">
-        <Group justify="space-between" w={1200}>
-          <Text fw={700} size="xl">
-            🌎 Elections Bot Forms
-          </Text>
-          <Group gap={0} component="nav">
+    <Paper
+      shadow="sm"
+      component="header"
+      pos="sticky"
+      top={0}
+      style={{
+        zIndex: 1000,
+      }}
+    >
+      <Group p="0.8rem 1.2rem" m="0 auto" justify="space-between" maw={1200}>
+        <Text fw={700} size="xl" component="span">
+          Elections Bot
+        </Text>
+        <nav>
+          <Group gap={0} visibleFrom="sm">
             <Button component={Link} href="/" variant="subtle">
               Home
+            </Button>
+            <Button component={Link} href="/docs" variant="subtle">
+              Docs
             </Button>
             <Button component={Link} href="/candidates" variant="subtle">
               Candidates
@@ -23,8 +34,8 @@ export default function Header() {
               Results
             </Button>
           </Group>
-        </Group>
-      </Center>
+        </nav>
+      </Group>
     </Paper>
   );
 }

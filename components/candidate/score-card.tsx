@@ -1,7 +1,7 @@
 'use client';
 
 import { candidateScoreEmojis, candidateScoreNames } from '@/lang/constants';
-import { darken, Flex, lighten, luminance, Paper, Text } from '@mantine/core';
+import { darken, Flex, lighten, Paper, Text } from '@mantine/core';
 import classes from './score-card.module.css';
 import { inter } from '@/lib/fonts';
 

@@ -1,44 +1,51 @@
 'use client';
 
-import NextImage from 'next/image';
-import { Image, Paper, PaperProps, px } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import NextImage, { ImageProps as NextImageProps } from 'next/image';
+import { Box, Image, Loader, ImageProps, Text, Stack } from '@mantine/core';
+import { useState } from 'react';
+import { FaImage } from 'react-icons/fa6';
 
-export default function CoverImage(
-  props: {
-    src: string;
-    w: string;
-    h: string;
-    alt: string;
-  } & PaperProps,
-) {
-  const [src, setSrc] = useState(props.src);
+export default function CoverImage(props: ImageProps & NextImageProps) {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  useEffect(() => {
-    setSrc(props.src);
-  }, [props.src]);
+  const handleLoad = () => {
+    setLoading(false);
+  };
 
-  const { w, h, alt, radius, ...others } = props;
+  const handleError = () => {
+    setLoading(false);
+    setError(true);
+  };
+
+  const { src } = props;
 
   return (
-    <Paper
-      bg="transparent"
-      pos="relative"
-      w={w}
-      h={h}
-      radius={radius}
-      {...others}
+    <Box
+      h="100%"
+      style={{
+        display: 'grid',
+        placeContent: 'center',
+      }}
     >
-      <Image
-        src={src}
-        alt={alt}
-        radius={radius}
-        component={NextImage}
-        sizes="14vw"
-        fill
-        priority
-        onError={() => setSrc(`https://placehold.co/${px(w)}x${px(h)}.png`)}
-      />
-    </Paper>
+      {loading && <Loader size="6rem" color="white" />}
+      {error ? (
+        <Stack align="center" c="#504f4f">
+          <FaImage size="6rem" />
+          <Text fw="500">Image not found</Text>
+        </Stack>
+      ) : (
+        <Image
+          {...props}
+          src={src}
+          component={NextImage}
+          sizes="14vw"
+          fill
+          priority
+          onLoad={handleLoad}
+          onError={handleError}
+        />
+      )}
+    </Box>
   );
 }

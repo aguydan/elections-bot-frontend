@@ -1,4 +1,5 @@
 //rename program relevance to policies relevance!!!!
+//this all will go to i18n!!
 
 export const candidateScoreNames = {
   gdp: 'GDP',

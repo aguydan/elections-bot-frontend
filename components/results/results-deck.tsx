@@ -1,18 +1,18 @@
 import { Box, Flex } from '@mantine/core';
 import { ResultsCard } from './results-card';
 import classes from './results-deck.module.css';
-import { z } from 'zod';
-import { electionResultSchema } from '@/schema/election-result';
+import { ElectionResult } from '@/types/schema-to-types';
 
 export default function ResultsDeck({
   results,
 }: {
-  results: z.infer<typeof electionResultSchema>[];
+  results: ElectionResult[];
 }) {
   return (
     <Flex
       className={classes.deck}
-      w="100%"
+      w="calc(100% + 6rem)"
+      right={0}
       pos="absolute"
       bottom="calc(100% + 0.5rem)"
     >

@@ -49,7 +49,6 @@ export const InfoPaper = polymorphicFactory<InfoPaperFactory>((_props, ref) => {
     name: 'InfoPaper',
     props,
     classes,
-    className,
     classNames,
     style,
     varsResolver,

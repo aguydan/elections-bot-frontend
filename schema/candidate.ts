@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const candidateSchema = z.object({
-  id: z.number().int().optional(),
+  id: z.number().int(),
   name: z.string().trim().min(1, { message: 'Name is required' }).max(100),
   color: z
     .string()

@@ -17,7 +17,6 @@ export default function FormImage({
 } & StackProps) {
   const handleUpload = async (file: File | null) => {
     if (!file) {
-      form.setFieldValue(fieldName, '');
       return;
     }
 
@@ -37,7 +36,7 @@ export default function FormImage({
       console.log(data);
       form.setFieldValue(fieldName, data.file.filename);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 
@@ -45,8 +44,9 @@ export default function FormImage({
     <Stack {...others}>
       {children}
       <FileInput
-        onChange={handleUpload}
+        accept="image/png,image/jpeg"
         label={label}
+        onChange={handleUpload}
         placeholder=".jpg/.png"
       />
     </Stack>

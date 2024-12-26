@@ -1,0 +1,14 @@
+.after::after {
+  content: '';
+  position: absolute;
+  left: -1rem;
+  top: -0.5rem;
+  height: calc(100% + 0.6rem);
+  width: min(30rem, 300%);
+  background: linear-gradient(to right, white, rgba(255, 255, 255, 0) 80%);
+  border-radius: 0.6rem;
+  opacity: 0.5;
+  transform-origin: left;
+  transform: rotateZ(5deg);
+  z-index: -1;
+}

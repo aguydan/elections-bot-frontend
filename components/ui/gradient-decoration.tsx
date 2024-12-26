@@ -82,6 +82,7 @@ export const GradientDecoration = (_props: GradientDecorationProps) => {
     children,
     gradientTop,
     gradientLeft,
+    gradientWidth,
     gradientAddHeight,
     ...others
   } = props;

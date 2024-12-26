@@ -7,8 +7,6 @@ export default async function Page({ params }: { params: { id: string } }) {
   const response = await fetch(`${API_PATH}/elections/${params.id}`);
   const data = await response.json();
 
-  //maybe postgres can fix this
-  data.turnout = Number(data.turnout);
   const parsed = electionSchema.safeParse(data);
 
   if (!parsed.success) {

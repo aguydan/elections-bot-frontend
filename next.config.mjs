@@ -1,9 +1,8 @@
-/** @type {import('next').NextConfig} */
-
 import fs from 'fs';
 
+/** @type {import('next').NextConfig} */
 const Config = JSON.parse(
-  fs.readFileSync(new URL('./config/config.json', import.meta.url))
+  fs.readFileSync(new URL('./config/config.json', import.meta.url)),
 );
 
 const nextConfig = {

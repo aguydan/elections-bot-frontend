@@ -16,6 +16,5 @@
   background: linear-gradient(to right, white, rgba(255, 255, 255, 0) 80%);
   border-radius: var(--gradient-radius);
   opacity: 0.51;
-  transform: rotate(var(--gradient-angle));
   transform-origin: left;
 }

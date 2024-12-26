@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 export async function createElection(
   data: z.infer<typeof electionSchema>,
-): Promise<{ error: any }> {
+): Promise<{ error: unknown }> {
   const parsed = electionSchema.safeParse(data);
 
   if (!parsed.success) {

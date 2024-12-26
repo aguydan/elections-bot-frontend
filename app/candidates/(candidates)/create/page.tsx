@@ -11,7 +11,7 @@ export default function Page() {
     party: null,
     image_url: null,
     score: Object.fromEntries(
-      Object.entries(candidateScoreNames).map((entry) => [entry[0], 0]),
+      Object.keys(candidateScoreNames).map((key) => [key, 0]),
     ),
   };
 

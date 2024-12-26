@@ -1,0 +1,12 @@
+.before::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(0lh - 0.35lh);
+  width: 1.5lh;
+  height: 1.5lh;
+  border-radius: 100%;
+  background-color: green;
+  z-index: -1;
+  /*   background-color: var(--circle-bg-clr); */
+}

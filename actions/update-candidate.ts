@@ -9,7 +9,7 @@ import { z } from 'zod';
 export async function updateCandidate(
   id: string,
   data: z.infer<typeof candidateSchema>,
-): Promise<{ error: any }> {
+): Promise<{ error: unknown }> {
   //I wonder if this can be done in Postgres or just in a better way
   data.updated_at = new Date(Date.now()).toISOString();
 

@@ -10,6 +10,7 @@ import {
   Slider,
   Button,
   Box,
+  Paper,
 } from '@mantine/core';
 import { Fragment } from 'react';
 import FormImage from './form-image';
@@ -48,14 +49,15 @@ export default function CandidateForm({
             w="12rem"
             form={form}
             fieldName="image_url"
+            key={form.key('image_url')}
             label="Upload portrait"
           >
-            <CoverImage
-              src={`${UPLOADS_PATH}/${form.getValues().image_url}`}
-              w="12rem"
-              h="16rem"
-              alt="Candidate portrait"
-            />
+            <Paper w="10rem" h="10rem" pos="relative">
+              <CoverImage
+                src={`${UPLOADS_PATH}/${form.getValues().image_url}`}
+                alt="Candidate portrait"
+              />
+            </Paper>
           </FormImage>
           <Stack flex={1}>
             <TextInput

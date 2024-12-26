@@ -1,4 +1,3 @@
-import ScoreCard from '@/components/candidate/score-card';
 import ScoreList from '@/components/candidate/score-list';
 import { AngledLine } from '@/components/ui/angled-line';
 import CoverImage from '@/components/ui/cover-image';
@@ -10,6 +9,7 @@ import {
   Box,
   Flex,
   Group,
+  Paper,
   Stack,
   Text,
   Title,
@@ -17,9 +17,8 @@ import {
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
-
-// FIX THE BLUR ISSUE
-// FIX the COVER IMAGE
+import circle from '@/components/ui/decorations/circle-decoration.module.css';
+import gradient from '@/components/ui/decorations/gradient-decoration.module.css';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const response = await fetch(`${API_PATH}/candidates/${params.id}`);
@@ -30,30 +29,56 @@ export default async function Page({ params }: { params: { id: string } }) {
   }
 
   return (
-    <Stack c="#000000">
-      <Group p="3.5rem 3.5rem 0" mb="1rem" align="stretch" gap="xl">
-        <CoverImage
-          radius="0.6rem"
-          w="12rem"
-          alt="Candidate portrait"
-          src={`${UPLOADS_PATH}/${candidate.image_url}`}
-        />
-        <Stack flex={1} gap="xs">
-          <Group pos="relative">
+    <Stack component="article" c="black">
+      <Group
+        component="section"
+        align="start"
+        p="3.5rem 2rem 0"
+        mb="1rem"
+        gap="xl"
+        wrap="nowrap"
+      >
+        <Paper
+          bg="white"
+          pos="relative"
+          miw="calc(0.75 * 18rem)"
+          h="18rem"
+          radius="lg"
+        >
+          <CoverImage
+            radius="lg"
+            alt="Candidate portrait"
+            src={`${UPLOADS_PATH}/${candidate.image_url}`}
+          />
+        </Paper>
+        <Stack gap="xs" miw={0}>
+          <Group>
             <Box
-              left={0}
-              top={0}
-              pos="absolute"
-              w="5.2rem"
-              h="5.2rem"
-              bg={candidate.color}
-              style={{ borderRadius: '100%' }}
-            />
-            <GradientDecoration angle={5} gradientTop="-0.6rem" mt="1.4rem">
-              <Title fw={800} fz="2.2rem" maw="30rem">
+              mt="1rem"
+              className={circle.before + ' ' + gradient.after}
+              pos="relative"
+              maw="100%"
+              fz={{
+                base: '1.4rem',
+                xs: '1.8rem',
+                sm: '2.2rem',
+              }}
+            >
+              <Title
+                fw={800}
+                fz={{
+                  base: '1.4rem',
+                  xs: '1.8rem',
+                  sm: '2.2rem',
+                }}
+                style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
                 {candidate.name}
               </Title>
-            </GradientDecoration>
+            </Box>
           </Group>
           <Flex align="center" gap={4} mt="1.4rem">
             <Text c="#716262" fw={700}>
@@ -91,7 +116,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <AngledLine mx="auto" left="-0.4rem" mt="1.8rem" />
         </Stack>
       </Stack>
-      <GradientDecoration angle={1} gradientTop="-0.34rem" m="0 3.5rem 2.5rem">
+      <GradientDecoration angle={1} gradientTop="-0.34rem" m="0 2.5rem 2.5rem">
         <Text fw={600} fz="lg">
           Candidate score • Total 0.78
         </Text>

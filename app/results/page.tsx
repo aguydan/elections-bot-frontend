@@ -12,7 +12,6 @@ import {
   Box,
 } from '@mantine/core';
 import { InfoPaper } from '@/components/ui/info-paper';
-
 import infoPaperClasses from '@/components/results/results-paper.module.css';
 import classes from './styles.module.css';
 import ResultsDeck from '@/components/results/results-deck';
@@ -32,6 +31,7 @@ export default async function Page() {
  their own components. I already have folders for them in the components folder with their styles
  */}
       <InfoPaper
+        id="screenshotable"
         classNames={{
           parent: infoPaperClasses.parent,
         }}
@@ -46,17 +46,21 @@ export default async function Page() {
           w="14rem"
           h="14rem"
           pos="absolute"
-          bg="black"
+          bg="white"
           radius="100%"
           right="4.5rem"
           top="5rem"
           style={{
             transform: 'rotate(5deg)',
             overflow: 'hidden',
-            WebkitMaskImage: '-webkit-radial-gradient(white, black)',
           }}
         >
-          <BackgroundImage src="/static/images/gb.png" h="100%" />
+          {/* see https://stackoverflow.com/questions/6492027/css-transform-jagged-edges-in-chrome */}
+          <BackgroundImage
+            src="/static/images/gb.png"
+            h="100%"
+            style={{ WebkitBackfaceVisibility: 'hidden' }}
+          />
         </Paper>
         <Title lh="2.6rem" order={1} fw={800} fz="2.6rem">
           Election Results
@@ -79,26 +83,31 @@ export default async function Page() {
               gradientAddHeight="2.2rem"
               gradientTop="-1.4rem"
             >
-              <CoverImage
-                radius="1rem"
-                left="2rem"
+              <Paper
                 className={classes.card}
-                style={{ transform: 'rotate(-4deg)', zIndex: 1 }}
-                src={`${UPLOADS_PATH}/${heldElection.results[0].image_url}`}
-                alt="Candidate portrait"
+                radius="1rem"
                 w="14rem"
                 h="20rem"
-              />
+                left="2rem"
+                pos="relative"
+                bg="white"
+                style={{ transform: 'rotate(-4deg)', zIndex: 1 }}
+              >
+                <CoverImage
+                  src={`${UPLOADS_PATH}/${heldElection.results[0].image_url}`}
+                  alt="Candidate portrait"
+                />
+              </Paper>
             </GradientDecoration>
             {heldElection.results.slice(1, 4).map((result) => (
-              <CoverImage
-                radius="1rem"
-                className={classes.card}
-                src={`${UPLOADS_PATH}/${result.image_url}`}
-                alt="Candidate portrait"
-                w="11rem"
-                h="15rem"
-              />
+              <Paper w="11rem" h="15rem" pos="relative" bg="transparent">
+                <CoverImage
+                  radius="1rem"
+                  className={classes.card}
+                  src={`${UPLOADS_PATH}/${result.image_url}`}
+                  alt="Candidate portrait"
+                />
+              </Paper>
             ))}
           </Group>
           <Box ml="2.6rem" pos="relative" style={{ zIndex: 2 }}>

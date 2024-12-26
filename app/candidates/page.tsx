@@ -1,55 +1,38 @@
-import FixedCoverImage from '@/components/ui/fixed-cover-image';
-import { API_PATH, UPLOADS_PATH } from '@/constants/api';
-import { candidateSchema } from '@/schema/candidate';
-import {
-  Badge,
-  Card,
-  CardSection,
-  Pagination,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-} from '@mantine/core';
-import Link from 'next/link';
-import { FaPersonCirclePlus } from 'react-icons/fa6';
-import { z } from 'zod';
+import CreateCandidateButton from '@/components/candidate/create-candidate-button';
+import PaginationCard from '@/components/ui/pagination-card';
+import { API_PATH } from '@/constants/api';
+import { Candidate } from '@/types/schema-to-types';
+import { Pagination, SimpleGrid, Stack } from '@mantine/core';
 
 export default async function Page() {
   const response = await fetch(`${API_PATH}/candidates`);
-  const data = (await response.json()) as z.infer<typeof candidateSchema>[];
+  const data = (await response.json()) as Candidate[];
 
   return (
-    <Stack align="center">
-      <SimpleGrid mt="2rem" cols={5} spacing="xl">
-        <Paper
-          c="yellow"
-          component={Link}
-          href={'candidates/create'}
-          bd="dashed"
-        >
-          <Stack align="center" h="100%" justify="center">
-            <FaPersonCirclePlus style={{ width: '5rem', height: '5rem' }} />
-            <Text fw={600}>Create candidate</Text>
-          </Stack>
-        </Paper>
+    <Stack m={{ base: '2rem 0', sm: '3rem 0' }} gap="3rem" align="center">
+      <SimpleGrid cols={{ base: 1, xss: 2, xs: 3, lg: 4, xl: 5 }} spacing="sm">
+        <CreateCandidateButton />
+        {data.map((candidate) => {
+          const badges = [];
 
-        {data.map((candidate) => (
-          <Card
-            key={candidate.id}
-            href={`/candidates/${candidate.id}`}
-            shadow="sm"
-            withBorder
-            padding="lg"
-            component={Link}
-          >
-            <CardSection>
-              <FixedCoverImage src={`${UPLOADS_PATH}/${candidate.image_url}`} />
-            </CardSection>
-            <Text fw={500}>{candidate.name}</Text>
-            <Badge>Wales, France</Badge>
-          </Card>
-        ))}
+          if (candidate.origin)
+            badges.push({ label: candidate.origin, color: candidate.color });
+
+          if (candidate.party) {
+            badges.push({ label: candidate.party, color: candidate.color });
+          } else {
+            badges.push({ label: 'Independent', color: 'gray' });
+          }
+
+          return (
+            <PaginationCard
+              id={candidate.id}
+              name={candidate.name}
+              imageName={candidate.image_url}
+              badges={badges}
+            />
+          );
+        })}
       </SimpleGrid>
       <Pagination total={2} />
     </Stack>
