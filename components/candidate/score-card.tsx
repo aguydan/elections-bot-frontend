@@ -46,8 +46,8 @@ export default function ScoreCard({
       <Text
         className={classes.score}
         ff={inter.style.fontFamily}
-        lh="2.8rem"
-        fz="2.8rem"
+        lh={{ base: '2.4rem', xs: '2.8rem' }}
+        fz={{ base: '2.4rem', xs: '2.8rem' }}
         fw={900}
       >
         {score}

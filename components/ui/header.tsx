@@ -4,6 +4,8 @@ import Link from 'next/link';
 export default function Header() {
   return (
     <Paper
+      radius={0}
+      px="1rem"
       shadow="sm"
       component="header"
       pos="sticky"
@@ -12,7 +14,7 @@ export default function Header() {
         zIndex: 1000,
       }}
     >
-      <Group p="0.8rem 1.2rem" m="0 auto" justify="space-between" maw={1200}>
+      <Group py="0.8rem" m="0 auto" justify="space-between" maw={1200}>
         <Text fw={700} size="xl" component="span">
           Elections Bot
         </Text>

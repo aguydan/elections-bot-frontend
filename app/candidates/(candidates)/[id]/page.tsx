@@ -30,18 +30,19 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <Stack component="article" c="black">
-      <Group
+      <Flex
         component="section"
-        align="start"
-        p="3.5rem 2rem 0"
+        align={{ base: 'center', xs: 'start' }}
+        p={{ base: '4rem 2rem 0', xs: '3.5rem 2rem 0' }}
         mb="1rem"
-        gap="xl"
-        wrap="nowrap"
+        gap="md"
+        direction={{ base: 'column', xs: 'row' }}
       >
         <Paper
+          flex="none"
           bg="white"
           pos="relative"
-          miw="calc(0.75 * 18rem)"
+          w="min(calc(0.75 * 18rem), 100%)"
           h="18rem"
           radius="lg"
         >
@@ -51,59 +52,69 @@ export default async function Page({ params }: { params: { id: string } }) {
             src={`${UPLOADS_PATH}/${candidate.image_url}`}
           />
         </Paper>
-        <Stack gap="xs" miw={0}>
-          <Group>
-            <Box
-              mt="1rem"
-              className={circle.before + ' ' + gradient.after}
-              pos="relative"
-              maw="100%"
+        <Stack
+          miw={0}
+          pl={{ base: 0, xs: '0.8rem' }}
+          style={{ alignSelf: 'stretch' }}
+          justify="space-between"
+        >
+          <Box
+            mt="1rem"
+            className={circle.before + ' ' + gradient.after}
+            style={{
+              '--circle-bg-color': candidate.color,
+            }}
+            pos="relative"
+            maw="100%"
+            fz={{
+              base: '1.4rem',
+              xs: '1.6rem',
+              sm: '2.2rem',
+            }}
+          >
+            <Title
+              fw={800}
               fz={{
                 base: '1.4rem',
-                xs: '1.8rem',
+                xs: '1.6rem',
                 sm: '2.2rem',
               }}
+              style={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
             >
-              <Title
-                fw={800}
-                fz={{
-                  base: '1.4rem',
-                  xs: '1.8rem',
-                  sm: '2.2rem',
-                }}
-                style={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {candidate.name}
-              </Title>
+              {candidate.name}
+            </Title>
+          </Box>
+          <Stack gap="xs" mt="1.4rem">
+            <Box>
+              <Text component="span" pr="0.3rem" c="#716262" fw={700}>
+                ORIGIN •
+              </Text>
+              <Text component="span" fw={800}>
+                {candidate.origin ? candidate.origin : '?'}
+              </Text>
             </Box>
-          </Group>
-          <Flex align="center" gap={4} mt="1.4rem">
-            <Text c="#716262" fw={700}>
-              ORIGIN •
-            </Text>
-            <Text fw={800}>{candidate.origin ? candidate.origin : '?'}</Text>
-          </Flex>
-          <Box>
-            <Text c="#716262" fw={700}>
-              RUNNING MATE
-            </Text>
-            <Text fw={800}>
-              {candidate.running_mate ? candidate.running_mate : 'No one'}
-            </Text>
-          </Box>
-          <Box>
-            <Text c="#716262" fw={700}>
-              POLITICAL PARTY
-            </Text>
-            <Text fw={800}>
-              {candidate.party ? candidate.party : 'Independent'}
-            </Text>
-          </Box>
+            <Box>
+              <Text c="#716262" fw={700}>
+                RUNNING MATE
+              </Text>
+              <Text fw={800}>
+                {candidate.running_mate ? candidate.running_mate : 'No one'}
+              </Text>
+            </Box>
+            <Box>
+              <Text c="#716262" fw={700}>
+                POLITICAL PARTY
+              </Text>
+              <Text fw={800}>
+                {candidate.party ? candidate.party : 'Independent'}
+              </Text>
+            </Box>
+          </Stack>
         </Stack>
-      </Group>
+      </Flex>
       <Stack mih="8.8rem" pos="relative">
         <Stack pos="absolute" w="100%">
           <AngledLine mx="auto" />
@@ -121,7 +132,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           Candidate score • Total 0.78
         </Text>
       </GradientDecoration>
-      <Group pos="absolute" right="1.6rem" top="1.6rem">
+      <Group pos="absolute" right="1.2rem" top="1rem">
         <ActionIcon
           href={`${params.id}/edit`}
           component={Link}
