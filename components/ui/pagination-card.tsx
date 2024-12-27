@@ -24,7 +24,6 @@ export default function PaginationCard({
       p={0}
     >
       <CardSection
-        pos="relative"
         h={{ base: '11rem', xss: '10.4rem', sm: '14rem', md: '16rem' }}
       >
         <CoverImage
@@ -45,8 +44,8 @@ export default function PaginationCard({
           {name}
         </Text>
         <Group justify="center" gap="0.4rem">
-          {badges.map((badge) => (
-            <Badge w="auto" flex="0 1 max-content" color={badge.color}>
+          {badges.map((badge, i) => (
+            <Badge key={i} w="auto" flex="0 1 max-content" color={badge.color}>
               {badge.label}
             </Badge>
           ))}

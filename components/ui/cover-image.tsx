@@ -2,7 +2,7 @@
 
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { Box, Image, Loader, ImageProps, Text, Stack } from '@mantine/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaImage } from 'react-icons/fa6';
 
 export default function CoverImage(props: ImageProps & NextImageProps) {
@@ -18,11 +18,15 @@ export default function CoverImage(props: ImageProps & NextImageProps) {
     setError(true);
   };
 
-  const { src } = props;
+  useEffect(() => {
+    setLoading(true);
+    setError(false);
+  }, [props.src]);
 
   return (
     <Box
       h="100%"
+      pos="relative"
       style={{
         display: 'grid',
         placeContent: 'center',
@@ -37,7 +41,6 @@ export default function CoverImage(props: ImageProps & NextImageProps) {
       ) : (
         <Image
           {...props}
-          src={src}
           component={NextImage}
           sizes="14vw"
           fill
