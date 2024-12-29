@@ -2,6 +2,7 @@ import CreateCandidateButton from '@/components/candidate/create-candidate-butto
 import PaginationCard from '@/components/ui/pagination-card';
 import { API_PATH } from '@/constants/api';
 import { PAGINATION_LIMIT } from '@/constants/app';
+import { processRequests } from '@/lib/fetch-utils';
 import { Candidate } from '@/types/schema-to-types';
 import {
   Group,
@@ -28,20 +29,20 @@ export default async function Page({
     page = parseInt(searchParams.page);
   }
 
-  const [data, count] = await Promise.all([
-    await fetch(
-      `${API_PATH}/candidates?limit=${PAGINATION_LIMIT}&offset=${PAGINATION_LIMIT * (page - 1)}`,
-    ),
-    await fetch(`${API_PATH}/candidates/count`),
-  ]);
+  const requestData = [
+    {
+      resource: `${API_PATH}/candidates?limit=${PAGINATION_LIMIT}&offset=${PAGINATION_LIMIT * (page - 1)}`,
+      middleware: (data: Candidate[]) => data,
+    },
+    {
+      resource: `${API_PATH}/candidates/count`,
+      middleware: (data: { count: number }) => data.count,
+    },
+  ] as const;
 
-  if (!data.ok) throw data;
-  if (!count.ok) throw count;
+  const [candidates, count] = await processRequests(requestData);
 
-  const newData = await data.json();
-  const newCount = (await count.json()).count;
-
-  const pagesCount = Math.ceil(newCount / PAGINATION_LIMIT);
+  const pagesCount = Math.ceil(count / PAGINATION_LIMIT);
 
   //create a custom hook for pagination
   /*   const [data, setData] = useState<Candidate[] | null>(null);
@@ -90,7 +91,7 @@ export default async function Page({
         style={{ alignItems: 'start' }}
       >
         <CreateCandidateButton />
-        {newData.map((candidate) => {
+        {candidates.map((candidate) => {
           const badges = [];
 
           if (candidate.origin)

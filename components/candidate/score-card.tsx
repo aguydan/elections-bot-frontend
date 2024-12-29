@@ -9,7 +9,7 @@ export default function ScoreCard({
   label,
   score,
 }: {
-  label: string;
+  label: keyof typeof candidateScoreNames;
   score: number;
 }) {
   const threshold = 0.2;
@@ -36,12 +36,8 @@ export default function ScoreCard({
       }}
     >
       <Flex gap="0.6rem">
-        <Text>
-          {candidateScoreEmojis[label as keyof typeof candidateScoreEmojis]}
-        </Text>
-        <Text fw={700}>
-          {candidateScoreNames[label as keyof typeof candidateScoreNames]}
-        </Text>
+        <Text>{candidateScoreEmojis[label]}</Text>
+        <Text fw={700}>{candidateScoreNames[label]}</Text>
       </Flex>
       <Text
         className={classes.score}

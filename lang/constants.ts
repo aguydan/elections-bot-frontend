@@ -14,7 +14,7 @@ export const candidateScoreNames = {
   devout_support: 'Devout support',
   capital_favorite: "The capital's favorite",
   propaganda_campaign: 'Propaganda campaign',
-};
+} as const;
 
 export const candidateScoreEmojis = {
   gdp: '📈',
@@ -29,4 +29,4 @@ export const candidateScoreEmojis = {
   devout_support: '🙏',
   capital_favorite: '💖',
   propaganda_campaign: '📢',
-};
+} as const;
