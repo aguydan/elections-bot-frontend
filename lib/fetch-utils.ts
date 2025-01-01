@@ -1,48 +1,64 @@
 interface Data {
   resource: string | URL | Request;
-  middleware: (data: any) => unknown;
+  middleware: (data: FetchResult) => unknown;
   options?: RequestInit;
 }
 
-type InferReturnType<T extends readonly unknown[]> = {
-  [K in keyof T]: InferReturnTypeSingle<T[K]>;
-};
+export type FetchResult<T = any> =
+  | {
+      data: T;
+      error: null;
+    }
+  | {
+      data: null;
+      error: string;
+    };
 
-type InferReturnTypeSingle<T> = T extends { middleware: (arg: any) => infer R }
-  ? R
-  : never;
+type InferReturnType<T extends readonly unknown[]> = {
+  [K in keyof T]: T[K] extends { middleware: (arg: any) => infer R }
+    ? R
+    : never;
+};
 
 //The order of the data array is preserved
 //https://stackoverflow.com/questions/28066429/promise-all-order-of-resolved-values
-export async function processRequests<T extends readonly Data[]>(
-  requests: T,
-): Promise<InferReturnType<T>> {
-  return Promise.all(requests.map((request) => processRequest(request))) as any;
+
+//Haven't yet figured out the way to type this properly, but it works as it is now
+export async function processRequests<T extends readonly Data[]>(requests: T) {
+  return Promise.all(
+    requests.map((request) => processRequest(request)),
+  ) as Promise<InferReturnType<T>>;
 }
 
-async function processRequest(request: Data) {
+async function processRequest<T extends Data>(request: T) {
   const data = await safeFetch(request.resource, request.options);
 
   return request.middleware(data);
 }
 
-async function safeFetch(
+export async function safeFetch<T>(
   resource: string | URL | Request,
   options?: RequestInit,
-): Promise<unknown> {
+): Promise<FetchResult<T>> {
   try {
     const response = await fetch(resource, options);
 
     if (!response.ok) {
-      throw new Error(
-        `Bad response: ${response.status}. ${response.statusText}`,
-      );
+      return {
+        data: null,
+        error: `API status ${response.status}: ${response.statusText}`,
+      };
     }
 
     const data = await response.json();
 
-    return data;
+    return { data, error: null };
   } catch (error) {
     console.error(error);
+
+    return {
+      data: null,
+      error: "Network Error: Couldn't connect to the API",
+    };
   }
 }

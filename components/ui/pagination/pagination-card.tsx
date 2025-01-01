@@ -1,7 +1,7 @@
 import { UPLOADS_PATH } from '@/constants/api';
 import { Badge, Card, CardSection, Group, Stack, Text } from '@mantine/core';
 import Link from 'next/link';
-import CoverImage from './cover-image';
+import CoverImage from '@/components/ui/cover-image';
 
 export default function PaginationCard({
   id,
