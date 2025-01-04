@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Box, ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import theme from '../lib/theme';
 import { inter, raleway } from '@/lib/fonts';

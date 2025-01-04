@@ -32,7 +32,7 @@ export default function CoverImage(props: ImageProps & NextImageProps) {
         placeContent: 'center',
       }}
     >
-      {loading && <Loader size="6rem" color="white" />}
+      {loading && <Loader size="6rem" color="#504f4f" />}
       {error ? (
         <Stack align="center" c="#504f4f">
           <FaImage size="6rem" />
