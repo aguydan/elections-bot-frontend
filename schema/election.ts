@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const electionSchema = z.object({
-  id: z.number().int().optional(), //do I even need ids that I never send???
+  id: z.number().int(),
   type: z
     .literal('presidential')
     .or(z.literal('general'))

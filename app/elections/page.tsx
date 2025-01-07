@@ -6,71 +6,75 @@ import { Election } from '@/types/schema-to-types';
 import Pagination from '@/components/ui/pagination/pagination';
 import CreateButton from '@/components/candidate/create-button';
 import { FaDiceFive } from 'react-icons/fa6';
+import PaginationTable from '@/components/ui/pagination/pagination-table';
+import { Box, SimpleGrid } from '@mantine/core';
+import { Suspense } from 'react';
+import Loading from '../loading';
 
-//create badges to util functions!!!!
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { page: string | null };
+  searchParams?: { page?: string };
 }) {
-  let currentPage = 1;
+  const currentPage = Number(searchParams?.page) || 1;
 
-  if (searchParams.page) {
-    currentPage = parseInt(searchParams.page);
-  }
-
-  const electionsCount = await safeFetch<{ count: number }>(
+  const totalItems = await safeFetch<{ count: number }>(
     `${API_PATH}/elections/count`,
   );
 
-  const elections = await safeFetch<Election[]>(
-    `${API_PATH}/elections?limit=${PAGINATION_LIMIT}&offset=${PAGINATION_LIMIT * (currentPage - 1)}`,
-  );
+  const itemsToCards = (data: Election[]) => {
+    const labels = ['type', 'date', 'country'] as const;
 
-  const error = elections.error || electionsCount.error;
+    return data.map((election) => {
+      const badges = [];
 
+      for (const label of labels) {
+        if (election[label]) {
+          badges.push({
+            label: election[label],
+            color: 'gray',
+          });
+        }
+      }
+
+      return (
+        <PaginationCard
+          key={election.id}
+          id={election.id}
+          name={election.name}
+          imageName={election.flag_url}
+          badges={badges}
+        />
+      );
+    });
+  };
   return (
-    <Pagination
-      count={electionsCount.data?.count ?? PAGINATION_LIMIT}
-      pathname="/elections"
-      currentPage={currentPage}
-      error={error}
-    >
-      <CreateButton
-        path="elections/create"
-        label="Create election"
-        icon={<FaDiceFive size="6rem" />}
+    <Box mb={{ base: '8rem', sm: '8rem' }}>
+      <Box pos="absolute" w="100%">
+        <SimpleGrid
+          cols={{ base: 1, xss: 2, xs: 3, lg: 4, xl: 5 }}
+          spacing="sm"
+          w="max-content"
+          mx="auto"
+        >
+          <CreateButton
+            path="elections/create"
+            label="Create election"
+            icon={<FaDiceFive size="6rem" />}
+          />
+        </SimpleGrid>
+      </Box>
+      <Suspense fallback={<Loading />}>
+        <PaginationTable
+          itemPath="elections"
+          cards={itemsToCards}
+          currentPage={currentPage}
+        />
+      </Suspense>
+      <Pagination
+        totalItems={totalItems.data?.count || PAGINATION_LIMIT}
+        error={totalItems.error}
       />
-      {elections.data &&
-        elections.data.map((candidate) => {
-          const badges = [];
-
-          //another option is for label in [ 'origin', 'party', 'etc' ] and access by name
-          if (candidate.origin)
-            badges.push({
-              label: candidate.origin,
-              color: candidate.color,
-            });
-
-          if (candidate.party) {
-            badges.push({
-              label: candidate.party,
-              color: candidate.color,
-            });
-          } else {
-            badges.push({ label: 'Independent', color: 'gray' });
-          }
-
-          return (
-            <PaginationCard
-              key={candidate.id}
-              id={candidate.id}
-              name={candidate.name}
-              imageName={candidate.image_url}
-              badges={badges}
-            />
-          );
-        })}
-    </Pagination>
+    </Box>
   );
 }

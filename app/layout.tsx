@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { Box, ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import theme from '../lib/theme';
 import { inter, raleway } from '@/lib/fonts';
@@ -23,7 +23,9 @@ export default function RootLayout({
       <body>
         <MantineProvider defaultColorScheme="dark" theme={theme}>
           <Header />
-          <main>{children}</main>
+          <main>
+            <Box mt={{ base: '2rem', sm: '3rem' }}>{children}</Box>
+          </main>
         </MantineProvider>
       </body>
     </html>

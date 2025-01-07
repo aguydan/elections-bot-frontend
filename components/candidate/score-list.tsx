@@ -8,16 +8,6 @@ export default function ScoreList({
 }: {
   score: Record<string, number>;
 }) {
-  const scores = () => {
-    return Object.entries(score)
-      .sort((a, b) => b[1] - a[1])
-      .map((entry, i) => {
-        const [label, value] = entry;
-
-        return <ScoreCard key={i} label={label} score={value} />;
-      });
-  };
-
   return (
     <Flex
       px="1rem"
@@ -26,7 +16,13 @@ export default function ScoreList({
       align="start"
       style={{ zIndex: 10 }}
     >
-      {scores()}
+      {Object.entries(score)
+        .sort((a, b) => b[1] - a[1])
+        .map((entry) => {
+          const [label, value] = entry;
+
+          return <ScoreCard key={label} label={label} score={value} />;
+        })}
     </Flex>
   );
 }

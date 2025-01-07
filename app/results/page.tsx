@@ -16,14 +16,13 @@ import infoPaperClasses from '@/components/results/results-paper.module.css';
 import classes from './styles.module.css';
 import ResultsDeck from '@/components/results/results-deck';
 import { API_PATH, UPLOADS_PATH } from '@/constants/api';
-import { z } from 'zod';
-import { heldElectionSchema } from '@/schema/held-election';
+import { safeFetch } from '@/lib/fetch-utils';
+import { HeldElection } from '@/types/schema-to-types';
 
 export default async function Page() {
-  const response = await fetch(`${API_PATH}/held`, { cache: 'no-store' });
-  const heldElection = (await response.json()) as z.infer<
-    typeof heldElectionSchema
-  >;
+  const heldElection = await safeFetch<HeldElection>(`${API_PATH}/held`, {
+    cache: 'no-store',
+  });
 
   return (
     <Center>
@@ -68,10 +67,10 @@ export default async function Page() {
         </Title>
         <Flex c="#84766F" gap="0.3rem">
           <Text fw={600} fz="xl">
-            {heldElection.election_name + ' •'}
+            {heldElection.data.election_name + ' •'}
           </Text>
           <Text fw={600} fz="xl">
-            {heldElection.date}
+            {heldElection.data.date}
           </Text>
         </Flex>
         <Stack maw="50rem" mt="3.4rem" ml="3rem" gap="6.6rem">
@@ -95,12 +94,12 @@ export default async function Page() {
                 style={{ transform: 'rotate(-4deg)', zIndex: 1 }}
               >
                 <CoverImage
-                  src={`${UPLOADS_PATH}/${heldElection.results[0].image_url}`}
+                  src={`${UPLOADS_PATH}/${heldElection.data.results[0].image_url}`}
                   alt="Candidate portrait"
                 />
               </Paper>
             </GradientDecoration>
-            {heldElection.results.slice(1, 4).map((result) => (
+            {heldElection.data.results.slice(1, 4).map((result) => (
               <Paper w="11rem" h="15rem" pos="relative" bg="transparent">
                 <CoverImage
                   radius="1rem"
@@ -112,7 +111,7 @@ export default async function Page() {
             ))}
           </Group>
           <Box ml="2.6rem" pos="relative" style={{ zIndex: 2 }}>
-            <ResultsDeck results={heldElection.results} />
+            <ResultsDeck results={heldElection.data.results} />
             <Paper
               display="flex"
               bg="transparent"
@@ -123,7 +122,7 @@ export default async function Page() {
                 boxShadow: '0px 0px 6.5px -1px rgba(0, 0, 0, 0.25)',
               }}
             >
-              {heldElection.results.map((result) => (
+              {heldElection.data.results.map((result) => (
                 <Box
                   className={classes.share}
                   w={result.percentage + '%'}

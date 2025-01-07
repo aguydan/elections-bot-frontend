@@ -1,7 +1,8 @@
 //rename program relevance to policies relevance!!!!
 //this all will go to i18n!!
+type CandidateScore = Record<string, any>;
 
-export const candidateScoreNames = {
+export const candidateScoreNames: CandidateScore = {
   gdp: 'GDP',
   party_relevance: 'Party relevance',
   program_relevance: 'Program relevance',
@@ -14,9 +15,9 @@ export const candidateScoreNames = {
   devout_support: 'Devout support',
   capital_favorite: "The capital's favorite",
   propaganda_campaign: 'Propaganda campaign',
-} as const;
+};
 
-export const candidateScoreEmojis = {
+export const candidateScoreEmojis: CandidateScore = {
   gdp: '📈',
   party_relevance: '🚩',
   program_relevance: '🗞️',
@@ -29,4 +30,4 @@ export const candidateScoreEmojis = {
   devout_support: '🙏',
   capital_favorite: '💖',
   propaganda_campaign: '📢',
-} as const;
+};

@@ -14,18 +14,3 @@ export const candidateSchema = z.object({
   created_at: z.string().datetime().optional(),
   updated_at: z.string().datetime().nullish(),
 });
-
-//candidate form data?
-// export type NewCandidate = Omit<
-//   {
-//     [K in keyof Candidate]: Candidate[K] extends infer T | null
-//       ? T
-//       : Candidate[K];
-//   },
-//   'id' | 'created_at' | 'updated_at'
-// >;
-
-// export type CandidateUpdate = Omit<
-//   Partial<Candidate>,
-//   'id' | 'created_at' | 'updated_at'
-// > & { updated_at: Date };

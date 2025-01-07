@@ -36,6 +36,7 @@ export default function FormImage({
       console.log(data);
       form.setFieldValue(fieldName, data.file.filename);
     } catch (error) {
+      //TODO: handle error
       throw error;
     }
   };
@@ -44,6 +45,7 @@ export default function FormImage({
     <Stack {...others}>
       {children}
       <FileInput
+        size="md"
         accept="image/png,image/jpeg"
         label={label}
         onChange={handleUpload}

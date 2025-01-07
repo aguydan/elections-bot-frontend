@@ -9,7 +9,7 @@ export default function ScoreCard({
   label,
   score,
 }: {
-  label: keyof typeof candidateScoreNames;
+  label: string;
   score: number;
 }) {
   const threshold = 0.2;

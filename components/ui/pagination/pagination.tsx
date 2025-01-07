@@ -1,3 +1,5 @@
+'use client';
+
 import { PAGINATION_LIMIT } from '@/constants/app';
 import {
   Group,
@@ -5,81 +7,61 @@ import {
   PaginationNext,
   PaginationPrevious,
   PaginationRoot,
-  SimpleGrid,
 } from '@mantine/core';
-import Link from 'next/link';
 import styles from '@/components/ui/pagination/pagination.module.css';
-import { ReactNode } from 'react';
-import ErrorBoundary from '@/components/ui/error-boundary';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
 export default function Pagination({
-  children,
-  count,
-  pathname,
-  currentPage = 1,
+  totalItems,
   error = null,
 }: {
-  children: ReactNode;
-  count: number;
-  pathname: string;
-  currentPage?: number;
+  totalItems: number;
   error?: string | null;
 }) {
-  //Number of pages depending on the total number of items
-  const pagesCount = count ? Math.ceil(count / PAGINATION_LIMIT) : 1;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
 
-  currentPage = Math.min(currentPage, pagesCount);
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const totalPages = Math.ceil(totalItems / PAGINATION_LIMIT);
+
+  const createPageURL = (pageNumber: number) => {
+    pageNumber = Math.min(pageNumber, totalPages);
+
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNumber.toString());
+
+    return `${pathname}?${params.toString()}`;
+  };
+
+  const handleChange = (pageNumber: number) => {
+    replace(createPageURL(pageNumber));
+  };
 
   return (
-    <ErrorBoundary
-      my={{ base: '2rem 8rem', sm: '3rem 8rem' }}
-      message={error}
-      description="Pagination might not work right now."
+    <PaginationRoot
+      disabled={!!error}
+      className={styles.navigation}
+      py={{ base: '1rem', xs: '1rem 2rem' }}
+      w="100%"
+      bg="#242424"
+      pos="fixed"
+      bottom={0}
+      total={totalPages}
+      value={currentPage}
+      onChange={(value) => handleChange(value)}
+      onNextPage={() => handleChange(currentPage + 1)}
+      onPreviousPage={() => handleChange(currentPage - 1)}
+      style={{
+        display: 'grid',
+        placeContent: 'center',
+      }}
     >
-      <SimpleGrid
-        w="max-content"
-        m="0 auto"
-        cols={{ base: 1, xss: 2, xs: 3, lg: 4, xl: 5 }}
-        spacing="sm"
-        style={{ alignItems: 'start' }}
-      >
-        {children}
-      </SimpleGrid>
-      <PaginationRoot
-        disabled={!!error}
-        className={styles.navigation}
-        w="100%"
-        py={{ base: '1rem', xs: '1rem 2rem' }}
-        bg="#242424"
-        pos="fixed"
-        bottom={0}
-        total={pagesCount}
-        value={currentPage}
-        style={{
-          display: 'grid',
-          placeContent: 'center',
-        }}
-      >
-        <Group gap="sm">
-          <PaginationPrevious
-            style={{ pointerEvents: error ? 'none' : 'initial' }}
-            component={Link}
-            href={{
-              pathname,
-              query: { page: Math.max(currentPage - 1, 1) },
-            }}
-          />
-          <PaginationItems />
-          <PaginationNext
-            style={{ pointerEvents: error ? 'none' : 'initial' }}
-            component={Link}
-            href={{
-              pathname,
-              query: { page: Math.min(currentPage + 1, pagesCount) },
-            }}
-          />
-        </Group>
-      </PaginationRoot>
-    </ErrorBoundary>
+      <Group gap="sm">
+        <PaginationPrevious />
+        <PaginationItems />
+        <PaginationNext />
+      </Group>
+    </PaginationRoot>
   );
 }

@@ -1,15 +1,12 @@
 .root {
   cursor: pointer;
-  background: radial-gradient(
+  background: 
+
+/*   radial-gradient(
       circle at 30% 20%,
       var(--card-primary-color) 0,
       var(--card-secondary-color) 70%
-    ),
-    radial-gradient(
-      circle at 30% 20%,
-      rgba(255, 255, 255, 1) 0,
-      rgba(255, 255, 255, 1) 100%
-    );
+    ), */ black;
   color: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
