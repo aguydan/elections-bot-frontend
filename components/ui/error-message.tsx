@@ -2,7 +2,7 @@ import { Box, BoxProps, Text, Title } from '@mantine/core';
 import { ReactNode } from 'react';
 import { FaCircleXmark } from 'react-icons/fa6';
 
-export default function ErrorBoundary({
+export default function ErrorMessage({
   message,
   description,
   children,
@@ -35,7 +35,7 @@ export default function ErrorBoundary({
         We are already investigating the issue, meanwhile try reloading the
         page.
       </Text>
-      <Text fw={600} c="#656565" mb="1.2rem">
+      <Text fw={600} c="#656565" mb="1rem">
         {message}
       </Text>
       {children}

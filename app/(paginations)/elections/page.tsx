@@ -7,9 +7,7 @@ import Pagination from '@/components/ui/pagination/pagination';
 import CreateButton from '@/components/candidate/create-button';
 import { FaDiceFive } from 'react-icons/fa6';
 import PaginationTable from '@/components/ui/pagination/pagination-table';
-import { Box, SimpleGrid } from '@mantine/core';
-import { Suspense } from 'react';
-import PaginationTableSkeleton from '@/components/ui/pagination/pagination-table-skeleton';
+import { Box } from '@mantine/core';
 
 export default async function Page({
   searchParams,
@@ -50,27 +48,17 @@ export default async function Page({
   };
   return (
     <Box mb={{ base: '8rem', sm: '8rem' }}>
-      <Box pos="absolute" w="100%">
-        <SimpleGrid
-          cols={{ base: 1, xss: 2, xs: 3, lg: 4, xl: 5 }}
-          spacing="sm"
-          w="max-content"
-          mx="auto"
-        >
-          <CreateButton
-            path="elections/create"
-            label="Create election"
-            icon={<FaDiceFive size="6rem" />}
-          />
-        </SimpleGrid>
-      </Box>
-      <Suspense fallback={<PaginationTableSkeleton />}>
-        <PaginationTable
-          itemPath="elections"
-          cards={itemsToCards}
-          currentPage={currentPage}
+      <PaginationTable
+        itemPath="elections"
+        cards={itemsToCards}
+        currentPage={currentPage}
+      >
+        <CreateButton
+          path="elections/create"
+          label="Create election"
+          icon={<FaDiceFive size="6rem" />}
         />
-      </Suspense>
+      </PaginationTable>
       <Pagination
         totalItems={totalItems.data?.count || PAGINATION_LIMIT}
         error={totalItems.error}

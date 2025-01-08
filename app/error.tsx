@@ -1,6 +1,6 @@
 'use client';
 
-import ErrorBoundary from '@/components/ui/error-boundary';
+import ErrorMessage from '@/components/ui/error-message';
 import { Button } from '@mantine/core';
 import { useEffect } from 'react';
 
@@ -16,13 +16,13 @@ export default function Error({
   }, [error]);
 
   return (
-    <ErrorBoundary
+    <ErrorMessage
       message={error.message}
       description="Something unexpected happened."
     >
       <Button onClick={() => reset()} size="md" bg="#bc3f3f">
         Try again
       </Button>
-    </ErrorBoundary>
+    </ErrorMessage>
   );
 }

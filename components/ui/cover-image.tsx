@@ -1,7 +1,7 @@
 'use client';
 
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
-import { Box, Image, Loader, ImageProps, Text, Stack } from '@mantine/core';
+import { Box, Image, ImageProps, Text, Stack, Skeleton } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { FaImage } from 'react-icons/fa6';
 
@@ -32,7 +32,9 @@ export default function CoverImage(props: ImageProps & NextImageProps) {
         placeContent: 'center',
       }}
     >
-      {loading && <Loader size="6rem" color="#504f4f" />}
+      {loading && (
+        <Skeleton radius={props.radius} pos="absolute" style={{ inset: 0 }} />
+      )}
       {error ? (
         <Stack align="center" c="#504f4f">
           <FaImage size="6rem" />
@@ -42,7 +44,7 @@ export default function CoverImage(props: ImageProps & NextImageProps) {
         <Image
           {...props}
           component={NextImage}
-          sizes="14vw"
+          sizes="(max-width: 400px) 90vw, (max-width: 576px) 64vw, (max-width: 992px) 44vw, 22vw"
           fill
           priority
           onLoad={handleLoad}

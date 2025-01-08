@@ -3,7 +3,6 @@ import { AngledLine } from '@/components/ui/angled-line';
 import CoverImage from '@/components/ui/cover-image';
 import { GradientDecoration } from '@/components/ui/gradient-decoration';
 import { API_PATH, UPLOADS_PATH } from '@/constants/api';
-import { candidateSchema } from '@/schema/candidate';
 import {
   ActionIcon,
   Box,
@@ -15,19 +14,23 @@ import {
   Title,
 } from '@mantine/core';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { z } from 'zod';
 import circle from '@/components/ui/decorations/circle-decoration.module.css';
 import gradient from '@/components/ui/decorations/gradient-decoration.module.css';
 import EditIcon from '@/components/ui/icons/edit-icon';
 import DeleteIcon from '@/components/ui/icons/delete-icon';
+import { safeFetch } from '@/lib/fetch-utils';
+import { Candidate } from '@/types/schema-to-types';
+import { notFound } from 'next/navigation';
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const response = await fetch(`${API_PATH}/candidates/${params.id}`);
-  const candidate = (await response.json()) as z.infer<typeof candidateSchema>;
+export default async function CandidateCard({ id }: { id: string }) {
+  const candidate = await safeFetch<Candidate>(`${API_PATH}/candidates/${id}`);
 
-  if (!response.ok) {
+  if (candidate.status === 404) {
     return notFound();
+  }
+
+  if (!candidate.data) {
+    throw new Error(candidate.error);
   }
 
   return (
@@ -51,7 +54,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <CoverImage
             radius="lg"
             alt="Candidate portrait"
-            src={`${UPLOADS_PATH}/${candidate.image_url}`}
+            src={`${UPLOADS_PATH}/${candidate.data.image_url}`}
           />
         </Paper>
         <Stack
@@ -64,7 +67,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             mt="1rem"
             className={circle.before + ' ' + gradient.after}
             style={{
-              '--circle-bg-color': candidate.color,
+              '--circle-bg-color': candidate.data.color,
             }}
             pos="relative"
             maw="100%"
@@ -86,7 +89,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 textOverflow: 'ellipsis',
               }}
             >
-              {candidate.name}
+              {candidate.data.name}
             </Title>
           </Box>
           <Stack gap="xs" mt="1.4rem">
@@ -95,20 +98,20 @@ export default async function Page({ params }: { params: { id: string } }) {
                 ORIGIN •
               </Text>
               <Text component="span" fw={800}>
-                {candidate.origin || '?'}
+                {candidate.data.origin || '?'}
               </Text>
             </Box>
             <Box>
               <Text c="#716262" fw={700}>
                 RUNNING MATE
               </Text>
-              <Text fw={800}>{candidate.running_mate || 'No one'}</Text>
+              <Text fw={800}>{candidate.data.running_mate || 'No one'}</Text>
             </Box>
             <Box>
               <Text c="#716262" fw={700}>
                 POLITICAL PARTY
               </Text>
-              <Text fw={800}>{candidate.party || 'Independent'}</Text>
+              <Text fw={800}>{candidate.data.party || 'Independent'}</Text>
             </Box>
           </Stack>
         </Stack>
@@ -119,7 +122,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <AngledLine mx="auto" left="0.4rem" mt="2.2rem" />
           <AngledLine mx="auto" mt="0.4rem" />
         </Stack>
-        <ScoreList score={candidate.score} />
+        <ScoreList score={candidate.data.score} />
         <Stack pos="absolute" w="100%" bottom={0}>
           <AngledLine mx="auto" left="-0.4rem" />
           <AngledLine mx="auto" left="-0.4rem" mt="1.8rem" />
@@ -132,7 +135,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       </GradientDecoration>
       <Group pos="absolute" right="1.2rem" top="1rem">
         <ActionIcon
-          href={`${params.id}/edit`}
+          href={`${id}/edit`}
           component={Link}
           aria-label="Edit"
           variant="transparent"

@@ -7,10 +7,12 @@ interface Data {
 export type FetchResult<T = any> =
   | {
       data: T;
+      status?: number;
       error: null;
     }
   | {
       data: null;
+      status?: number;
       error: string;
     };
 
@@ -46,13 +48,18 @@ export async function safeFetch<T>(
     if (!response.ok) {
       return {
         data: null,
+        status: response.status,
         error: `API status ${response.status}: ${response.statusText}`,
       };
     }
 
     const data = await response.json();
 
-    return { data, error: null };
+    return {
+      data,
+      status: response.status,
+      error: null,
+    };
   } catch (error) {
     console.error(error);
 

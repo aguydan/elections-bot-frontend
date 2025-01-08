@@ -20,7 +20,7 @@ export default function Pagination({
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { replace } = useRouter();
+  const { push } = useRouter();
 
   const currentPage = Number(searchParams.get('page')) || 1;
   const totalPages = Math.ceil(totalItems / PAGINATION_LIMIT);
@@ -35,7 +35,7 @@ export default function Pagination({
   };
 
   const handleChange = (pageNumber: number) => {
-    replace(createPageURL(pageNumber));
+    push(createPageURL(pageNumber));
   };
 
   return (
