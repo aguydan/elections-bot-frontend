@@ -1,13 +1,16 @@
 import { Box, BoxProps, Text, Title } from '@mantine/core';
+import { ReactNode } from 'react';
 import { FaCircleXmark } from 'react-icons/fa6';
 
 export default function ErrorBoundary({
   message,
   description,
+  children,
   ...others
 }: {
   message: string;
   description?: string;
+  children?: ReactNode;
 } & BoxProps) {
   return (
     <Box
@@ -32,9 +35,10 @@ export default function ErrorBoundary({
         We are already investigating the issue, meanwhile try reloading the
         page.
       </Text>
-      <Text fw={600} c="#656565">
+      <Text fw={600} c="#656565" mb="1.2rem">
         {message}
       </Text>
+      {children}
     </Box>
   );
 }

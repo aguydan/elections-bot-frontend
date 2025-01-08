@@ -9,7 +9,7 @@ import { FaDiceFive } from 'react-icons/fa6';
 import PaginationTable from '@/components/ui/pagination/pagination-table';
 import { Box, SimpleGrid } from '@mantine/core';
 import { Suspense } from 'react';
-import Loading from '../loading';
+import PaginationTableSkeleton from '@/components/ui/pagination/pagination-table-skeleton';
 
 export default async function Page({
   searchParams,
@@ -64,7 +64,7 @@ export default async function Page({
           />
         </SimpleGrid>
       </Box>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<PaginationTableSkeleton />}>
         <PaginationTable
           itemPath="elections"
           cards={itemsToCards}

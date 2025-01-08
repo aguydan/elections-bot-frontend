@@ -3,6 +3,7 @@ import { PAGINATION_LIMIT } from '@/constants/app';
 import { safeFetch } from '@/lib/fetch-utils';
 import { SimpleGrid } from '@mantine/core';
 import styles from './pagination-grid.module.css';
+import PaginationTableSkeleton from './pagination-table-skeleton';
 
 //error handling
 export default async function PaginationTable({
@@ -18,8 +19,10 @@ export default async function PaginationTable({
     `${API_PATH}/${itemPath}?limit=${PAGINATION_LIMIT}&offset=${PAGINATION_LIMIT * (currentPage - 1)}`,
   );
 
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
   if (!items.data) {
-    return <h1>{items.error}</h1>;
+    return <PaginationTableSkeleton />;
   }
 
   return (
@@ -34,7 +37,7 @@ export default async function PaginationTable({
       mx="auto"
       style={{ alignItems: 'start' }}
     >
-      {cards ? (typeof cards === 'function' ? cards(items.data) : cards) : null}
+      {typeof cards === 'function' ? cards(items.data) : cards}
     </SimpleGrid>
   );
 }
