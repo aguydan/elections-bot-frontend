@@ -12,7 +12,6 @@ import {
   Box,
   Paper,
 } from '@mantine/core';
-import { Fragment } from 'react';
 import FormImage from './form-image';
 import { candidateSchema } from '@/schema/candidate';
 import { candidateScoreNames } from '@/lang/constants';
@@ -21,13 +20,17 @@ import { useRouter } from 'next/navigation';
 import CoverImage from '../ui/cover-image';
 import { UPLOADS_PATH } from '@/constants/api';
 import { Candidate } from '@/types/schema-to-types';
+import { toast } from 'react-toastify';
+import { isRedirectError } from 'next/dist/client/components/redirect';
 
 export default function CandidateForm({
   initialValues,
   action,
 }: {
   initialValues: Candidate;
-  action: (data: Candidate) => Promise<{ error: any }>;
+  action: (
+    data: Candidate,
+  ) => Promise<{ message: string; error: boolean } | void>;
 }) {
   const router = useRouter();
 
@@ -38,13 +41,30 @@ export default function CandidateForm({
   });
 
   const handleSubmit = async (data: typeof form.values) => {
-    console.log(await action(data));
+    try {
+      const result = await action(data);
+
+      if (result) {
+        if (result.error) {
+          toast.error(result.message);
+
+          return;
+        }
+
+        toast.success(result.message);
+      }
+    } catch (error) {
+      if (isRedirectError(error)) throw error;
+
+      console.error(error);
+      toast.error("Couldn't connect to the server");
+    }
   };
 
   return (
-    <Box p={{ base: '4rem 2rem 0', xs: '3.5rem 2rem 0' }} c="black">
+    <Box p={{ base: '4rem 2rem 2rem', xs: '3.5rem 2rem 2rem' }} c="black">
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Group align="start" gap="xl">
+        <Group gap="xl" mb="1rem">
           <FormImage
             w="min(calc(0.75 * 18rem), 100%)"
             form={form}
@@ -61,62 +81,87 @@ export default function CandidateForm({
             </Paper>
           </FormImage>
           <Stack flex={1}>
-            <TextInput
-              size="md"
-              label="Name"
-              description="Candidate's name (presidential elections) or party's name (general)"
-              withAsterisk
-              key={form.key('name')}
-              {...form.getInputProps('name')}
-            />
-            <ColorInput
-              size="md"
-              label="Campaign color"
-              withAsterisk
-              key={form.key('color')}
-              {...form.getInputProps('color')}
-            />
-            <TextInput
-              size="md"
-              label="Origin"
-              key={form.key('origin')}
-              {...form.getInputProps('origin')}
-            />
+            <Stack gap={0} h="18rem" justify="space-between">
+              <TextInput
+                size="md"
+                label="Name"
+                description="Candidate's name or party's name"
+                withAsterisk
+                key={form.key('name')}
+                {...form.getInputProps('name')}
+              />
+              <Group wrap="nowrap" align="start">
+                <ColorInput
+                  flex="100%"
+                  size="md"
+                  label="Campaign color"
+                  withAsterisk
+                  key={form.key('color')}
+                  {...form.getInputProps('color')}
+                />
+                <TextInput
+                  flex="100%"
+                  size="md"
+                  label="Origin"
+                  key={form.key('origin')}
+                  {...form.getInputProps('origin')}
+                />
+              </Group>
+              <TextInput
+                size="md"
+                label="Political party"
+                description="Leave empty for general elections and use the name field instead"
+                key={form.key('party')}
+                {...form.getInputProps('party')}
+              />
+            </Stack>
             <TextInput
               size="md"
               label="Running mate"
               key={form.key('running_mate')}
               {...form.getInputProps('running_mate')}
             />
-            <TextInput
-              size="md"
-              label="Political party"
-              description="Leave empty for general elections and use the name field instead"
-              key={form.key('party')}
-              {...form.getInputProps('party')}
-            />
-            <Fieldset legend="Candidate score">
-              {Object.entries(candidateScoreNames).map((name, index) => (
-                <Fragment key={name[0]}>
-                  <Text mt={index === 0 ? 0 : 'md'}>{name[1]}</Text>
-                  <Slider
-                    size="lg"
-                    step={0.01}
-                    max={1}
-                    key={form.key('score.' + name[0])}
-                    {...form.getInputProps('score.' + name[0])}
-                  />
-                </Fragment>
-              ))}
-            </Fieldset>
           </Stack>
         </Group>
-        <Group mt="xl" justify="space-between">
-          <Button onClick={() => router.back()} variant="outline" size="md">
+        <Fieldset
+          variant="unstyled"
+          legend="Candidate score"
+          display="flex"
+          style={{
+            flexDirection: 'column',
+            gap: '1rem',
+          }}
+        >
+          {Object.entries(candidateScoreNames).map((entry) => {
+            const [label, value] = entry;
+
+            return (
+              <Stack key={label} gap={0}>
+                <Text fw={600}>{value}</Text>
+                <Slider
+                  color="#716262"
+                  size="lg"
+                  step={0.01}
+                  max={1}
+                  key={form.key('score.' + label)}
+                  {...form.getInputProps('score.' + label)}
+                />
+              </Stack>
+            );
+          })}
+        </Fieldset>
+        <Group pos="absolute" right="2rem" top="1rem">
+          <Button
+            onClick={() => router.back()}
+            radius="md"
+            c="black"
+            color="black"
+            variant="subtle"
+          >
             Cancel
           </Button>
-          <Button type="submit" size="md">
-            Save candidate
+          <Button type="submit" radius="md" variant="white" c="black">
+            Save
           </Button>
         </Group>
       </form>

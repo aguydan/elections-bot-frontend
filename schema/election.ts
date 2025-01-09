@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const electionSchema = z.object({
-  id: z.number().int(),
+  id: z.number().int().optional(),
   type: z
     .literal('presidential')
     .or(z.literal('general'))

@@ -1,11 +1,12 @@
 import fs from 'fs';
 
-/** @type {import('next').NextConfig} */
 const Config = JSON.parse(
   fs.readFileSync(new URL('./config/config.json', import.meta.url)),
 );
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {

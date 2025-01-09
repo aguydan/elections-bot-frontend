@@ -7,7 +7,7 @@ export default function PaginationTable({
   children,
   ...props
 }: {
-  itemPath: string;
+  itemsPath: string;
   currentPage: number;
   cards: (data: any[]) => JSX.Element[] | JSX.Element[];
   children?: ReactNode;

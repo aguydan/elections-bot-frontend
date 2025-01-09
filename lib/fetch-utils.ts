@@ -46,10 +46,13 @@ export async function safeFetch<T>(
     const response = await fetch(resource, options);
 
     if (!response.ok) {
+      const error = `API status ${response.status}: ${response.statusText}`;
+      console.error(error);
+
       return {
         data: null,
         status: response.status,
-        error: `API status ${response.status}: ${response.statusText}`,
+        error,
       };
     }
 

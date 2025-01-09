@@ -1,24 +1,19 @@
 import PaginationCard from '@/components/ui/pagination/pagination-card';
-import { API_PATH } from '@/constants/api';
-import { PAGINATION_LIMIT } from '@/constants/app';
-import { safeFetch } from '@/lib/fetch-utils';
 import { Candidate } from '@/types/schema-to-types';
-import Pagination from '@/components/ui/pagination/pagination';
 import CreateButton from '@/components/candidate/create-button';
 import { FaPersonCirclePlus } from 'react-icons/fa6';
 import PaginationTable from '@/components/ui/pagination/pagination-table';
-import { Box } from '@mantine/core';
+import { Suspense } from 'react';
+import PaginationSkeleton from '@/components/ui/pagination/pagination-skeleton';
+import Pagination from '@/components/ui/pagination/pagination';
+import ToastProvider from '@/components/providers/toast-provider';
 
-export default async function Page({
+export default function Page({
   searchParams,
 }: {
   searchParams?: { page?: string };
 }) {
   const currentPage = Number(searchParams?.page) || 1;
-
-  const totalItems = await safeFetch<{ count: number }>(
-    `${API_PATH}/candidates/count`,
-  );
 
   const itemsToCards = (data: Candidate[]) => {
     const labels = ['origin', 'running_mate', 'party'] as const;
@@ -53,23 +48,22 @@ export default async function Page({
       );
     });
   };
+
   return (
-    <Box mb={{ base: '8rem', sm: '8rem' }}>
-      <PaginationTable
-        itemPath="candidates"
-        cards={itemsToCards}
-        currentPage={currentPage}
-      >
-        <CreateButton
-          path="candidates/create"
-          label="Create candidate"
-          icon={<FaPersonCirclePlus size="6rem" />}
-        />
-      </PaginationTable>
-      <Pagination
-        totalItems={totalItems.data?.count || PAGINATION_LIMIT}
-        error={totalItems.error}
-      />
-    </Box>
+    <Suspense fallback={<PaginationSkeleton />}>
+      <Pagination totalItemsPath="candidates/count">
+        <PaginationTable
+          itemsPath="candidates"
+          cards={itemsToCards}
+          currentPage={currentPage}
+        >
+          <CreateButton
+            path="candidates/create"
+            label="Create candidate"
+            icon={<FaPersonCirclePlus size="6rem" />}
+          />
+        </PaginationTable>
+      </Pagination>
+    </Suspense>
   );
 }

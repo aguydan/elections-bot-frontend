@@ -9,10 +9,6 @@
     ), */ black;
   color: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
-  /* very laggy for some reason */
-  /*   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px); */
 }
 
 .score {

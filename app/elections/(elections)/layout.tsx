@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <InfoPaper
         classNames={{ ...styles }}
         bgSrc="/static/images/old-paper-bg.png"
-        mx="1rem"
+        mb="3rem"
       >
         {children}
       </InfoPaper>

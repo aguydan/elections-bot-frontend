@@ -1,27 +1,26 @@
 'use server';
 
 import { API_PATH } from '@/constants/api';
+import { validate } from '@/lib/action-utils';
+import { safeFetch } from '@/lib/fetch-utils';
 import { candidateSchema } from '@/schema/candidate';
+import { Candidate } from '@/types/schema-to-types';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import { z } from 'zod';
 
 export async function updateCandidate(
   id: string,
-  data: z.infer<typeof candidateSchema>,
-): Promise<{ error: unknown }> {
+  data: Candidate,
+): Promise<{ message: string; error: boolean }> {
   //I wonder if this can be done in Postgres or just in a better way
   data.updated_at = new Date(Date.now()).toISOString();
 
-  const parsed = candidateSchema.safeParse(data);
+  const validation = validate(candidateSchema, data);
 
-  if (!parsed.success) {
-    return {
-      error: parsed.error.flatten().fieldErrors,
-    };
+  if (validation.error) {
+    return validation;
   }
 
-  const response = await fetch(`${API_PATH}/candidates/${id}`, {
+  const result = await safeFetch(`${API_PATH}/candidates/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -29,11 +28,17 @@ export async function updateCandidate(
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    return { error: 'Candidate was not updated: ' + response.statusText };
+  if (result.error) {
+    return {
+      message: 'Candidate was not created',
+      error: true,
+    };
   }
 
   revalidatePath(`/candidates/${id}`);
   revalidatePath('/candidates');
-  redirect(`/candidates/${id}`);
+  return {
+    message: 'Candidate was updated successfully',
+    error: false,
+  };
 }

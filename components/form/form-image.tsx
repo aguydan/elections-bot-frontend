@@ -1,7 +1,9 @@
 import { UPLOADS_PATH } from '@/constants/api';
+import { safeFetch } from '@/lib/fetch-utils';
 import { FileInput, Stack, StackProps } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { ReactNode } from 'react';
+import { toast } from 'react-toastify';
 
 export default function FormImage({
   form,
@@ -15,30 +17,49 @@ export default function FormImage({
   fieldName: string;
   children: ReactNode;
 } & StackProps) {
-  const handleUpload = async (file: File | null) => {
+  const handleUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const result = await safeFetch<{ file: { filename: string } }>(
+      UPLOADS_PATH,
+      {
+        method: 'POST',
+        body: formData,
+      },
+    );
+
+    if (!result.data) {
+      console.error(result.error);
+
+      throw new Error('Upload failed');
+    }
+
+    form.setFieldValue(fieldName, result.data.file.filename);
+
+    return { message: 'File was successfully uploaded' };
+  };
+
+  const handleChange = (file: File | null) => {
     if (!file) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('image', file);
+    //write a wrapper for this thing
+    toast.promise(handleUpload(file), {
+      pending: 'Uploading the file...',
+      success: {
+        render({ data }) {
+          return data.message;
+        },
+      },
 
-    try {
-      const response = await fetch(UPLOADS_PATH, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) throw response;
-
-      const data = await response.json();
-
-      console.log(data);
-      form.setFieldValue(fieldName, data.file.filename);
-    } catch (error) {
-      //TODO: handle error
-      throw error;
-    }
+      error: {
+        render({ data }) {
+          return data.message;
+        },
+      },
+    });
   };
 
   return (
@@ -48,7 +69,7 @@ export default function FormImage({
         size="md"
         accept="image/png,image/jpeg"
         label={label}
-        onChange={handleUpload}
+        onChange={handleChange}
         placeholder=".jpg/.png"
       />
     </Stack>

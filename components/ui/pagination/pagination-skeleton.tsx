@@ -1,7 +1,7 @@
 import { Box, SimpleGrid, Skeleton } from '@mantine/core';
 import PaginationCardsSkeleton from './pagination-cards-skeleton';
 
-export default async function PaginationTableSkeleton() {
+export default async function PaginationSkeleton() {
   return (
     <Box mb={{ base: '8rem', sm: '8rem' }}>
       <SimpleGrid

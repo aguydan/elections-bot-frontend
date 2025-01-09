@@ -3,18 +3,18 @@ import { PAGINATION_LIMIT } from '@/constants/app';
 import { safeFetch } from '@/lib/fetch-utils';
 
 export default async function PaginationCards({
-  itemPath,
+  itemsPath,
   currentPage,
   cards,
 }: {
-  itemPath: string;
+  itemsPath: string;
   currentPage: number;
   cards: (data: any[]) => JSX.Element[] | JSX.Element[];
 }) {
   const offset = PAGINATION_LIMIT * (currentPage - 1);
 
   const items = await safeFetch<unknown[]>(
-    `${API_PATH}/${itemPath}?limit=${PAGINATION_LIMIT}&offset=${offset}`,
+    `${API_PATH}/${itemsPath}?limit=${PAGINATION_LIMIT}&offset=${offset}`,
   );
 
   if (!items.data) {

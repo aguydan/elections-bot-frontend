@@ -13,14 +13,14 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import Link from 'next/link';
 import circle from '@/components/ui/decorations/circle-decoration.module.css';
 import gradient from '@/components/ui/decorations/gradient-decoration.module.css';
-import EditIcon from '@/components/ui/icons/edit-icon';
-import DeleteIcon from '@/components/ui/icons/delete-icon';
 import { safeFetch } from '@/lib/fetch-utils';
 import { Candidate } from '@/types/schema-to-types';
 import { notFound } from 'next/navigation';
+import EditButton from '../ui/buttons/edit-button';
+import DeleteButton from '../ui/buttons/delete-button';
+import { deleteCandidate } from '@/actions/delete-candidate';
 
 export default async function CandidateCard({ id }: { id: string }) {
   const candidate = await safeFetch<Candidate>(`${API_PATH}/candidates/${id}`);
@@ -134,18 +134,12 @@ export default async function CandidateCard({ id }: { id: string }) {
         </Text>
       </GradientDecoration>
       <Group pos="absolute" right="1.2rem" top="1rem">
-        <ActionIcon
-          href={`${id}/edit`}
-          component={Link}
-          aria-label="Edit"
-          variant="transparent"
-          size="lg"
-        >
-          <EditIcon />
-        </ActionIcon>
-        <ActionIcon aria-label="Delete" variant="transparent" size="lg">
-          <DeleteIcon />
-        </ActionIcon>
+        <EditButton href={`${id}/edit`} />
+        <DeleteButton
+          id={id}
+          redirectPath="/candidates"
+          action={deleteCandidate}
+        />
       </Group>
     </Stack>
   );

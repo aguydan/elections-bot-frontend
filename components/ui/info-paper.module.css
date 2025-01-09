@@ -4,15 +4,11 @@
 }
 
 .parent {
+  clip-path: inset(0 round 1.4rem);
   background-color: #b78d64;
   width: 46rem;
-  border-radius: var(--paper-radius);
   position: relative;
   overflow: hidden;
-
-  /* Fixes overflow hidden and border radius artifacts */
-  mask-image: radial-gradient(white, black);
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .backdrop {

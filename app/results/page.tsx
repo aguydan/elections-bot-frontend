@@ -46,13 +46,12 @@ export default async function Page() {
           h="14rem"
           pos="absolute"
           bg="white"
-          radius="100%"
           right="4.5rem"
           top="5rem"
           style={{
             transform: 'rotate(5deg)',
             overflow: 'hidden',
-            boxShadow: '0px 0px 6.5px -1px rgba(0, 0, 0, 0.25)',
+            clipPath: 'circle()',
           }}
         >
           {/* see https://stackoverflow.com/questions/6492027/css-transform-jagged-edges-in-chrome */}

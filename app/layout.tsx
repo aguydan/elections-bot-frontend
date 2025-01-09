@@ -4,6 +4,7 @@ import '@mantine/core/styles.css';
 import theme from '../lib/theme';
 import { inter, raleway } from '@/lib/fonts';
 import Header from '@/components/ui/header';
+import ToastProvider from '@/components/providers/toast-provider';
 
 export const metadata: Metadata = {
   title: 'Elections Bot Forms',
@@ -22,10 +23,12 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider defaultColorScheme="dark" theme={theme}>
-          <Header />
-          <main>
-            <Box mt={{ base: '2rem', sm: '3rem' }}>{children}</Box>
-          </main>
+          <ToastProvider>
+            <Header />
+            <main>
+              <Box mt={{ base: '2rem', sm: '3rem' }}>{children}</Box>
+            </main>
+          </ToastProvider>
         </MantineProvider>
       </body>
     </html>
