@@ -7,8 +7,8 @@ import Header from '@/components/ui/header';
 import ToastProvider from '@/components/providers/toast-provider';
 
 export const metadata: Metadata = {
-  title: 'Elections Bot Forms',
-  description: 'A frontend app for the Elections Bot',
+  title: 'Elections Bot',
+  description: 'Web app for a Discord bot made for election simulation',
 };
 
 export default function RootLayout({
