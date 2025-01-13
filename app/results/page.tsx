@@ -56,7 +56,7 @@ export default async function Page() {
         >
           {/* see https://stackoverflow.com/questions/6492027/css-transform-jagged-edges-in-chrome */}
           <BackgroundImage
-            src="/static/images/gb.png"
+            src={`${UPLOADS_PATH}/${heldElection.data.flag_url}`}
             h="100%"
             style={{ WebkitBackfaceVisibility: 'hidden' }}
           />

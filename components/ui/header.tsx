@@ -1,5 +1,6 @@
-import { Box, Button, Group, Paper, Text } from '@mantine/core';
+import { Box, Group, Paper, Text } from '@mantine/core';
 import Link from 'next/link';
+import PrimaryNavigation from './primary-navigation';
 
 export default function Header() {
   return (
@@ -31,20 +32,7 @@ export default function Header() {
             Elections Bot
           </Text>
         </Box>
-        <Group gap={0} visibleFrom="sm">
-          <Button component={Link} href="/docs" variant="subtle">
-            Docs
-          </Button>
-          <Button component={Link} href="/candidates" variant="subtle">
-            Candidates
-          </Button>
-          <Button component={Link} href="/elections" variant="subtle">
-            Elections
-          </Button>
-          <Button component={Link} href="/results" variant="subtle">
-            Results
-          </Button>
-        </Group>
+        <PrimaryNavigation />
       </Group>
     </Paper>
   );

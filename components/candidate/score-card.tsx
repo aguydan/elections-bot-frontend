@@ -1,49 +1,96 @@
 'use client';
 
 import { candidateScoreEmojis, candidateScoreNames } from '@/lang/constants';
-import { darken, Flex, lighten, Paper, Text } from '@mantine/core';
-import classes from './score-card.module.css';
-import { inter } from '@/lib/fonts';
+import { Flex, Paper, Text } from '@mantine/core';
+import { inter } from '@/styles/fonts';
+import { useGSAP } from '@gsap/react';
+import gsap from '@/lib/gsap';
+import { useRef } from 'react';
+
+import './score-card.css';
 
 export default function ScoreCard({
   label,
+  color,
   score,
 }: {
   label: string;
+  color: string;
   score: number;
 }) {
-  const threshold = 0.2;
+  const container = useRef(null);
+  const rect = useRef<DOMRect | null>(null);
 
-  const primaryColor =
-    score > threshold
-      ? lighten('#ab78dd', score - threshold)
-      : darken('#ab78dd', threshold - score);
-  const secondaryColor =
-    score > threshold
-      ? lighten('#00000066', score - threshold)
-      : darken('#00000066', threshold - score);
+  const { contextSafe } = useGSAP({ scope: container });
+
+  //probably all of them need useMemo
+  //useMouseEvents
+  const handleMouseMove = contextSafe((e: Event) => {
+    const event = e as MouseEvent;
+
+    const xTo = gsap.quickTo('.circle', 'x');
+    const yTo = gsap.quickTo('.circle', 'y');
+
+    if (rect.current) {
+      xTo(event.clientX - rect.current.left);
+      yTo(event.clientY - rect.current.top);
+    }
+  });
+
+  const handleMouseLeave = contextSafe((e: Event) => {
+    const target = e.currentTarget as EventTarget & Element;
+
+    gsap.to('.circle', {
+      scale: 0,
+      ease: 'power2',
+    });
+
+    target.removeEventListener('mousemove', handleMouseMove);
+  });
+
+  const handleMouseEnter = contextSafe((e: React.MouseEvent) => {
+    const target = e.currentTarget;
+    rect.current = target.getBoundingClientRect();
+
+    target.addEventListener('mouseleave', handleMouseLeave, { once: true });
+    target.addEventListener('mousemove', handleMouseMove);
+
+    gsap.set('.circle', {
+      xPercent: -50,
+      yPercent: -50,
+      x: e.clientX - rect.current.left,
+      y: e.clientY - rect.current.top,
+    });
+
+    gsap.to('.circle', {
+      scale: 1,
+      ease: 'elastic',
+    });
+  });
 
   return (
     <Paper
-      className={classes.root}
+      ref={container}
+      onMouseEnter={(e) => handleMouseEnter(e)}
+      className="card"
       flex={'1 1 auto'}
-      p="0.8rem 1.4rem"
-      radius="1.4rem"
+      p="0.8rem 1rem"
       style={{
-        '--card-primary-color': primaryColor,
-        '--card-secondary-color': secondaryColor,
-        transform: `rotate(${Math.random() * 5}deg)`,
+        '--circle-color': color,
+        transform: `rotate(${Math.random() * 5 - 2.5}deg)`,
       }}
     >
+      <div className="circle"></div>
       <Flex gap="0.6rem">
         <Text>{candidateScoreEmojis[label]}</Text>
         <Text fw={700}>{candidateScoreNames[label]}</Text>
       </Flex>
       <Text
-        className={classes.score}
+        mt="1.2rem"
+        className="score"
         ff={inter.style.fontFamily}
-        lh={{ base: '2.4rem', xs: '2.8rem' }}
-        fz={{ base: '2.4rem', xs: '2.8rem' }}
+        lh={{ base: '2rem', xs: '2.4rem' }}
+        fz={{ base: '2rem', xs: '2.4rem' }}
         fw={900}
       >
         {score}

@@ -5,10 +5,12 @@ import styles from '@/components/candidate/candidate-paper.module.css';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
+    //put both layouts into a single component
     <Center>
       <InfoPaper
         classNames={{ ...styles }}
-        bgSrc="/static/images/old-paper-bg.png"
+        bgSrc="/assets/images/noise.png"
+        mx="1rem"
         mb="3rem"
       >
         {children}

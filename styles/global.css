@@ -1,0 +1,22 @@
+.mantine-InputWrapper-description {
+  color: black;
+}
+
+.mantine-Fieldset-legend {
+  font-size: var(--mantine-font-size-lg);
+  font-weight: 600;
+  margin-left: 1rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -10%;
+    background-color: var(--mantine-color-orange-1);
+    z-index: -1;
+    border-radius: var(--mantine-radius-md);
+    transform: rotate(-2deg);
+    width: 120%;
+  }
+}

@@ -1,0 +1,26 @@
+.navigationOpened {
+  gap: 1rem;
+  background-color: var(--mantine-color-body);
+  place-content: start center;
+  place-items: start;
+
+  @mixin smaller-than $mantine-breakpoint-sm {
+    display: grid;
+    position: fixed;
+    inset: 0;
+    padding-top: 4rem;
+  }
+}
+
+.navigationClosed {
+  gap: 1rem;
+
+  @mixin smaller-than $mantine-breakpoint-sm {
+    display: none;
+  }
+}
+
+.burger {
+  position: relative;
+  z-index: 2000;
+}

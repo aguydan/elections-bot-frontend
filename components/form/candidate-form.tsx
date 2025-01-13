@@ -11,10 +11,11 @@ import {
   Button,
   Box,
   Paper,
+  Flex,
 } from '@mantine/core';
 import FormImage from './form-image';
 import { candidateSchema } from '@/schema/candidate';
-import { candidateScoreNames } from '@/lang/constants';
+import { candidateScoreEmojis, candidateScoreNames } from '@/lang/constants';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import CoverImage from '../ui/cover-image';
@@ -62,9 +63,14 @@ export default function CandidateForm({
   };
 
   return (
-    <Box p={{ base: '4rem 2rem 2rem', xs: '3.5rem 2rem 2rem' }} c="black">
+    <Box p={{ base: '5rem 1rem 2rem', xs: '3.5rem 2rem 2rem' }} c="black">
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Group gap="xl" mb="1rem">
+        <Flex
+          gap="xl"
+          mb="2rem"
+          direction={{ base: 'column', sm: 'row' }}
+          align="center"
+        >
           <FormImage
             w="min(calc(0.75 * 18rem), 100%)"
             form={form}
@@ -72,16 +78,26 @@ export default function CandidateForm({
             key={form.key('image_url')}
             label="Upload portrait"
           >
-            <Paper pos="relative" h="18rem" radius="lg" bg="white">
+            <Paper
+              pos="relative"
+              h="18rem"
+              bg="white"
+              style={{
+                clipPath: 'inset(0 round 1rem)',
+              }}
+            >
               <CoverImage
-                radius="lg"
                 src={`${UPLOADS_PATH}/${form.getValues().image_url}`}
                 alt="Candidate portrait"
               />
             </Paper>
           </FormImage>
-          <Stack flex={1}>
-            <Stack gap={0} h="18rem" justify="space-between">
+          <Stack flex={1} w="100%">
+            <Stack
+              gap={0}
+              h={{ base: 'auto', xs: '18rem' }}
+              justify="space-between"
+            >
               <TextInput
                 size="md"
                 label="Name"
@@ -90,7 +106,13 @@ export default function CandidateForm({
                 key={form.key('name')}
                 {...form.getInputProps('name')}
               />
-              <Group wrap="nowrap" align="start">
+              <Flex
+                my={{ base: 'md', xs: 0 }}
+                gap="md"
+                wrap="nowrap"
+                align={{ base: 'normal', xss: 'start' }}
+                direction={{ base: 'column', xss: 'row' }}
+              >
                 <ColorInput
                   flex="100%"
                   size="md"
@@ -106,7 +128,7 @@ export default function CandidateForm({
                   key={form.key('origin')}
                   {...form.getInputProps('origin')}
                 />
-              </Group>
+              </Flex>
               <TextInput
                 size="md"
                 label="Political party"
@@ -122,14 +144,14 @@ export default function CandidateForm({
               {...form.getInputProps('running_mate')}
             />
           </Stack>
-        </Group>
+        </Flex>
         <Fieldset
           variant="unstyled"
           legend="Candidate score"
           display="flex"
           style={{
             flexDirection: 'column',
-            gap: '1rem',
+            gap: '1.4rem',
           }}
         >
           {Object.entries(candidateScoreNames).map((entry) => {
@@ -137,9 +159,11 @@ export default function CandidateForm({
 
             return (
               <Stack key={label} gap={0}>
-                <Text fw={600}>{value}</Text>
+                <Group gap="0.6rem" mb="0.4rem">
+                  <Text>{candidateScoreEmojis[label]}</Text>
+                  <Text fw={600}>{value}</Text>
+                </Group>
                 <Slider
-                  color="#716262"
                   size="lg"
                   step={0.01}
                   max={1}

@@ -32,9 +32,7 @@ export default function CoverImage(props: ImageProps & NextImageProps) {
         placeContent: 'center',
       }}
     >
-      {loading && (
-        <Skeleton radius={props.radius} pos="absolute" style={{ inset: 0 }} />
-      )}
+      {loading && <Skeleton pos="absolute" style={{ inset: 0 }} />}
       {error ? (
         <Stack align="center" c="#504f4f">
           <FaImage size="6rem" />

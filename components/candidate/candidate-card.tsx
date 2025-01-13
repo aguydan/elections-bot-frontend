@@ -3,16 +3,7 @@ import { AngledLine } from '@/components/ui/angled-line';
 import CoverImage from '@/components/ui/cover-image';
 import { GradientDecoration } from '@/components/ui/gradient-decoration';
 import { API_PATH, UPLOADS_PATH } from '@/constants/api';
-import {
-  ActionIcon,
-  Box,
-  Flex,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core';
+import { Box, Flex, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import circle from '@/components/ui/decorations/circle-decoration.module.css';
 import gradient from '@/components/ui/decorations/gradient-decoration.module.css';
 import { safeFetch } from '@/lib/fetch-utils';
@@ -38,7 +29,7 @@ export default async function CandidateCard({ id }: { id: string }) {
       <Flex
         component="section"
         align={{ base: 'center', xs: 'start' }}
-        p={{ base: '4rem 2rem 0', xs: '3.5rem 2rem 0' }}
+        p={{ base: '5rem 1rem 0', xss: '3.5rem 2rem 0' }}
         mb="1rem"
         gap="md"
         direction={{ base: 'column', xs: 'row' }}
@@ -49,10 +40,11 @@ export default async function CandidateCard({ id }: { id: string }) {
           pos="relative"
           w="min(calc(0.75 * 18rem), 100%)"
           h="18rem"
-          radius="lg"
+          style={{
+            clipPath: 'inset(0 round 1rem)',
+          }}
         >
           <CoverImage
-            radius="lg"
             alt="Candidate portrait"
             src={`${UPLOADS_PATH}/${candidate.data.image_url}`}
           />
@@ -122,7 +114,7 @@ export default async function CandidateCard({ id }: { id: string }) {
           <AngledLine mx="auto" left="0.4rem" mt="2.2rem" />
           <AngledLine mx="auto" mt="0.4rem" />
         </Stack>
-        <ScoreList score={candidate.data.score} />
+        <ScoreList score={candidate.data.score} color={candidate.data.color} />
         <Stack pos="absolute" w="100%" bottom={0}>
           <AngledLine mx="auto" left="-0.4rem" />
           <AngledLine mx="auto" left="-0.4rem" mt="1.8rem" />
@@ -135,11 +127,7 @@ export default async function CandidateCard({ id }: { id: string }) {
       </GradientDecoration>
       <Group pos="absolute" right="1.2rem" top="1rem">
         <EditButton href={`${id}/edit`} />
-        <DeleteButton
-          id={id}
-          redirectPath="/candidates"
-          action={deleteCandidate}
-        />
+        <DeleteButton id={id} action={deleteCandidate} />
       </Group>
     </Stack>
   );

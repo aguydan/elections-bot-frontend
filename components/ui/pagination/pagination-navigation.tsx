@@ -40,6 +40,7 @@ export default function PaginationNavigation({
 
   return (
     <PaginationRoot
+      role="navigation"
       disabled={!!error}
       className={styles.navigation}
       py={{ base: '1rem', xs: '1rem 2rem' }}

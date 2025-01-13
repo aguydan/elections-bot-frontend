@@ -5,18 +5,15 @@
 
 .parent {
   clip-path: inset(0 round 1.4rem);
-  background-color: #b78d64;
+  background-color: #b98259;
   width: 46rem;
   position: relative;
   overflow: hidden;
 }
 
 .backdrop {
-  width: 100%;
   position: absolute;
-  background-position: top center;
-  background-size: 140%;
-  background-repeat: no-repeat;
-  opacity: 0.28;
+  background-size: 150%;
+  opacity: 0.3;
   inset: 0;
 }

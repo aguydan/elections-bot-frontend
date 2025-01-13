@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
 import { Box, ColorSchemeScript, MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css';
-import theme from '../lib/theme';
-import { inter, raleway } from '@/lib/fonts';
+import theme from '../styles/theme';
+import { inter, raleway } from '@/styles/fonts';
 import Header from '@/components/ui/header';
 import ToastProvider from '@/components/providers/toast-provider';
+
+import '@mantine/core/styles.css';
+
+/* Overwrites some of the Mantine styles */
+import '@/styles/global.css';
 
 export const metadata: Metadata = {
   title: 'Elections Bot',

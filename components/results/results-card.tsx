@@ -1,4 +1,4 @@
-import { inter } from '@/lib/fonts';
+import { inter } from '@/styles/fonts';
 import { Box, Flex, Paper, PaperProps, Stack, Text } from '@mantine/core';
 import { AngledLine } from '../ui/angled-line';
 

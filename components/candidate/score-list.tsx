@@ -5,8 +5,10 @@ import ScoreCard from './score-card';
 
 export default function ScoreList({
   score,
+  color,
 }: {
   score: Record<string, number>;
+  color: string;
 }) {
   return (
     <Flex
@@ -21,7 +23,9 @@ export default function ScoreList({
         .map((entry) => {
           const [label, value] = entry;
 
-          return <ScoreCard key={label} label={label} score={value} />;
+          return (
+            <ScoreCard key={label} label={label} score={value} color={color} />
+          );
         })}
     </Flex>
   );

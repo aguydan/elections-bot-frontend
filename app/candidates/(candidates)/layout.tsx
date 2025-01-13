@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <Center>
       <InfoPaper
         classNames={{ ...styles }}
-        bgSrc="/static/images/old-paper-bg.png"
+        bgSrc="/assets/images/noise.png"
         mx="1rem"
         mb="3rem"
       >
