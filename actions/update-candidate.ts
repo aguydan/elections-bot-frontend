@@ -10,14 +10,14 @@ import { revalidatePath } from 'next/cache';
 export async function updateCandidate(
   id: string,
   data: Candidate,
-): Promise<{ message: string; error: boolean }> {
+): Promise<{ message: string; error: boolean; redirect: boolean }> {
   //I wonder if this can be done in Postgres or just in a better way
   data.updated_at = new Date(Date.now()).toISOString();
 
   const validation = validate(candidateSchema, data);
 
   if (validation.error) {
-    return validation;
+    return { ...validation, redirect: false };
   }
 
   const result = await safeFetch(`${API_PATH}/candidates/${id}`, {
@@ -30,15 +30,18 @@ export async function updateCandidate(
 
   if (result.error) {
     return {
-      message: 'Candidate was not created',
+      message: 'Candidate was not updated',
       error: true,
+      redirect: false,
     };
   }
 
   revalidatePath(`/candidates/${id}`);
   revalidatePath('/candidates');
+
   return {
     message: 'Candidate was updated successfully',
     error: false,
+    redirect: false,
   };
 }

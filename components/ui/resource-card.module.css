@@ -1,0 +1,50 @@
+.cardTitleContainer {
+  position: relative;
+  font-size: 1.4rem;
+
+  @mixin larger-than $mantine-breakpoint-xs {
+    font-size: 1.6rem;
+  }
+
+  @mixin larger-than $mantine-breakpoint-sm {
+    font-size: 2.2rem;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: calc(0lh - 0.35lh);
+    width: 1.5lh;
+    height: 1.5lh;
+    border-radius: 100%;
+    background-color: var(--circle-bg-color, var(--mantine-color-gray-5));
+    z-index: -1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: -0.5rem;
+    height: calc(100% + 0.6rem);
+    width: min(30rem, 300%);
+    background: linear-gradient(
+      to right,
+      var(--gradient-color-left, white),
+      transparent 80%
+    );
+    border-radius: var(--mantine-radius-md);
+    opacity: 0.5;
+    transform-origin: left;
+    transform: rotateZ(5deg);
+    z-index: -1;
+  }
+
+  .cardTitle {
+    font-size: inherit;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

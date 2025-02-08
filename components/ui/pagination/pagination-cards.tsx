@@ -1,6 +1,8 @@
 import { API_PATH } from '@/constants/api';
 import { PAGINATION_LIMIT } from '@/constants/app';
 import { safeFetch } from '@/lib/fetch-utils';
+import ErrorMessage from '../error-message';
+import classes from './pagination-cards.module.css';
 
 export default async function PaginationCards({
   itemsPath,
@@ -18,7 +20,15 @@ export default async function PaginationCards({
   );
 
   if (!items.data) {
-    throw new Error(items.error);
+    return (
+      <ErrorMessage
+        className={classes.error}
+        radius="lg"
+        bg="#3f2a2a"
+        message={items.error}
+        description="Cards might not show right now."
+      />
+    );
   }
 
   return <>{typeof cards === 'function' ? cards(items.data) : cards}</>;

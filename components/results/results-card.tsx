@@ -12,6 +12,7 @@ type ResultsCardProps = (
       place: number;
     }
 ) & {
+  //pass all of this as a single result object
   percentage: number;
   name: string;
   party: string;

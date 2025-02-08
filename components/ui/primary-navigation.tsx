@@ -11,10 +11,17 @@ export default function PrimaryNavigation() {
 
   return (
     <Box>
-      <Box className={opened ? 'navigationOpened' : 'navigationClosed'}>
-        <Button component={Link} href="/docs" variant="subtle" onClick={close}>
-          Docs
-        </Button>
+      <Burger
+        className="burger"
+        opened={opened}
+        hiddenFrom="sm"
+        aria-label="Toggle navigation"
+        onClick={toggle}
+      />
+      <Box
+        component="ul"
+        className={opened ? 'navigationOpened' : 'navigationClosed'}
+      >
         <Button
           component={Link}
           href="/candidates"
@@ -40,13 +47,6 @@ export default function PrimaryNavigation() {
           Results
         </Button>
       </Box>
-      <Burger
-        className="burger"
-        opened={opened}
-        hiddenFrom="sm"
-        aria-label="Toggle navigation"
-        onClick={toggle}
-      />
     </Box>
   );
 }

@@ -6,16 +6,14 @@ import { safeFetch } from '@/lib/fetch-utils';
 import { candidateSchema } from '@/schema/candidate';
 import { Candidate } from '@/types/schema-to-types';
 import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 export async function createCandidate(
   data: Candidate,
-): Promise<{ message: string; error: boolean } | void> {
+): Promise<{ message: string; error: boolean; redirect: boolean }> {
   const validation = validate(candidateSchema, data);
 
   if (validation.error) {
-    return validation;
+    return { ...validation, redirect: false };
   }
 
   const result = await safeFetch(`${API_PATH}/candidates`, {
@@ -30,14 +28,15 @@ export async function createCandidate(
     return {
       message: 'Candidate was not created',
       error: true,
+      redirect: false,
     };
   }
 
-  const cookieStore = cookies();
-  cookieStore.set('actionId', crypto.randomUUID(), { sameSite: 'strict' });
-  cookieStore.set('action', 'created', { sameSite: 'strict' });
-  cookieStore.set('resource', 'Candidate', { sameSite: 'strict' });
-
   revalidatePath('/candidates');
-  redirect('/candidates');
+
+  return {
+    message: 'Candidate was successfully created',
+    error: false,
+    redirect: true,
+  };
 }

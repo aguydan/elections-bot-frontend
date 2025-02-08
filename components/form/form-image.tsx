@@ -45,7 +45,7 @@ export default function FormImage({
       return;
     }
 
-    //write a wrapper for this thing
+    //here goes the wrapper for actions and toasts that im yet to create
     toast.promise(handleUpload(file), {
       pending: 'Uploading the file...',
       success: {

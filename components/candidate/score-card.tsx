@@ -68,10 +68,33 @@ export default function ScoreCard({
     });
   });
 
+  const handleClick = contextSafe((e: React.MouseEvent) => {
+    const tl = gsap.timeline({
+      defaults: {
+        duration: 0.3,
+      },
+    });
+
+    tl.to('.circle', {
+      scale: 2,
+      opacity: 0,
+      ease: 'power2',
+    })
+      .set('.circle', {
+        scale: 0,
+        opacity: 1,
+      })
+      .to('.circle', {
+        scale: 1,
+        ease: 'power2',
+      });
+  });
+
   return (
     <Paper
       ref={container}
       onMouseEnter={(e) => handleMouseEnter(e)}
+      onClick={(e) => handleClick(e)}
       className="card"
       flex={'1 1 auto'}
       p="0.8rem 1rem"

@@ -3,12 +3,10 @@
 import { API_PATH } from '@/constants/api';
 import { safeFetch } from '@/lib/fetch-utils';
 import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 export async function deleteCandidate(
   id: string,
-): Promise<{ message: string; error: boolean } | void> {
+): Promise<{ message: string; error: boolean; redirect: boolean }> {
   const result = await safeFetch(`${API_PATH}/candidates/${id}`, {
     method: 'DELETE',
     headers: {
@@ -20,14 +18,16 @@ export async function deleteCandidate(
     return {
       message: 'Candidate was not deleted',
       error: true,
+      redirect: false,
     };
   }
 
-  const cookieStore = cookies();
-  cookieStore.set('actionId', crypto.randomUUID(), { sameSite: 'strict' });
-  cookieStore.set('action', 'deleted', { sameSite: 'strict' });
-  cookieStore.set('resource', 'Candidate', { sameSite: 'strict' });
-
+  revalidatePath(`/candidates/${id}`);
   revalidatePath('/candidates');
-  redirect('/candidates');
+
+  return {
+    message: 'Candidate was deleted successfully',
+    error: false,
+    redirect: true,
+  };
 }

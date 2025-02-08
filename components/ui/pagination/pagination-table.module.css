@@ -1,0 +1,7 @@
+.table {
+  display: grid;
+  grid-template-columns: var(--pagination-columns);
+  justify-content: center;
+  align-items: start;
+  gap: var(--mantine-spacing-sm);
+}

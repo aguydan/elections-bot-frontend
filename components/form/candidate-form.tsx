@@ -22,7 +22,6 @@ import CoverImage from '../ui/cover-image';
 import { UPLOADS_PATH } from '@/constants/api';
 import { Candidate } from '@/types/schema-to-types';
 import { toast } from 'react-toastify';
-import { isRedirectError } from 'next/dist/client/components/redirect';
 
 export default function CandidateForm({
   initialValues,
@@ -31,7 +30,7 @@ export default function CandidateForm({
   initialValues: Candidate;
   action: (
     data: Candidate,
-  ) => Promise<{ message: string; error: boolean } | void>;
+  ) => Promise<{ message: string; error: boolean; redirect: boolean }>;
 }) {
   const router = useRouter();
 
@@ -41,23 +40,25 @@ export default function CandidateForm({
     validate: zodResolver(candidateSchema),
   });
 
+  //make this and delete a utility function
   const handleSubmit = async (data: typeof form.values) => {
     try {
       const result = await action(data);
 
-      if (result) {
-        if (result.error) {
-          toast.error(result.message);
+      if (result.error) {
+        toast.error(result.message);
 
-          return;
-        }
+        return;
+      }
 
-        toast.success(result.message);
+      toast.success(result.message);
+
+      if (result.redirect) {
+        router.push('/candidates');
       }
     } catch (error) {
-      if (isRedirectError(error)) throw error;
-
       console.error(error);
+
       toast.error("Couldn't connect to the server");
     }
   };

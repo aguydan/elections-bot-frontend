@@ -34,7 +34,9 @@ export async function createElection(
   }
 
   const cookieStore = cookies();
-  cookieStore.set('actionId', crypto.randomUUID(), { sameSite: 'strict' });
+  cookieStore.set('actionId', crypto.randomUUID(), {
+    sameSite: 'strict',
+  });
   cookieStore.set('action', 'created', { sameSite: 'strict' });
   cookieStore.set('resource', 'Election', { sameSite: 'strict' });
 

@@ -1,3 +1,36 @@
+:root {
+  --pagination-columns: 16rem;
+
+  @mixin larger-than $mantine-breakpoint-xss {
+    --pagination-columns: 10.4rem 10.4rem;
+  }
+
+  @mixin larger-than $mantine-breakpoint-xs {
+    --pagination-columns: 10.4rem 10.4rem 10.4rem;
+  }
+
+  @mixin larger-than $mantine-breakpoint-sm {
+    --pagination-columns: 14rem 14rem 14rem;
+  }
+
+  @mixin larger-than $mantine-breakpoint-md {
+    --pagination-columns: 16rem 16rem 16rem;
+  }
+
+  @mixin larger-than $mantine-breakpoint-lg {
+    --pagination-columns: 16rem 16rem 16rem 16rem;
+  }
+
+  @mixin larger-than $mantine-breakpoint-xl {
+    --pagination-columns: 16rem 16rem 16rem 16rem 16rem;
+  }
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
 .mantine-InputWrapper-description {
   color: black;
 }

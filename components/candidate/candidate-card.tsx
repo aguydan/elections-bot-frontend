@@ -4,14 +4,14 @@ import CoverImage from '@/components/ui/cover-image';
 import { GradientDecoration } from '@/components/ui/gradient-decoration';
 import { API_PATH, UPLOADS_PATH } from '@/constants/api';
 import { Box, Flex, Group, Paper, Stack, Text, Title } from '@mantine/core';
-import circle from '@/components/ui/decorations/circle-decoration.module.css';
-import gradient from '@/components/ui/decorations/gradient-decoration.module.css';
 import { safeFetch } from '@/lib/fetch-utils';
 import { Candidate } from '@/types/schema-to-types';
 import { notFound } from 'next/navigation';
 import EditButton from '../ui/buttons/edit-button';
 import DeleteButton from '../ui/buttons/delete-button';
 import { deleteCandidate } from '@/actions/delete-candidate';
+import classes from '@/components/ui/resource-card.module.css';
+import CandidateCardSkeleton from '../ui/fallbacks/candidate-card-skeleton';
 
 export default async function CandidateCard({ id }: { id: string }) {
   const candidate = await safeFetch<Candidate>(`${API_PATH}/candidates/${id}`);
@@ -25,11 +25,13 @@ export default async function CandidateCard({ id }: { id: string }) {
   }
 
   return (
+    //     <CandidateCardSkeleton />
     <Stack component="article" c="black">
       <Flex
         component="section"
         align={{ base: 'center', xs: 'start' }}
-        p={{ base: '5rem 1rem 0', xss: '3.5rem 2rem 0' }}
+        pt={{ base: '5rem', xs: '3.5rem' }}
+        px={{ base: '1rem', xss: '2rem' }}
         mb="1rem"
         gap="md"
         direction={{ base: 'column', xs: 'row' }}
@@ -56,33 +58,14 @@ export default async function CandidateCard({ id }: { id: string }) {
           justify="space-between"
         >
           <Box
-            mt="1rem"
-            className={circle.before + ' ' + gradient.after}
+            mt="0.35lh"
+            className={classes.cardTitleContainer}
             style={{
               '--circle-bg-color': candidate.data.color,
             }}
-            pos="relative"
             maw="100%"
-            fz={{
-              base: '1.4rem',
-              xs: '1.6rem',
-              sm: '2.2rem',
-            }}
           >
-            <Title
-              fw={800}
-              fz={{
-                base: '1.4rem',
-                xs: '1.6rem',
-                sm: '2.2rem',
-              }}
-              style={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {candidate.data.name}
-            </Title>
+            <Title className={classes.cardTitle}>{candidate.data.name}</Title>
           </Box>
           <Stack gap="xs" mt="1.4rem">
             <Box>

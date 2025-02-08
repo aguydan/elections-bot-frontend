@@ -1,5 +1,5 @@
-import { Flex, Skeleton, Stack } from '@mantine/core';
+import CandidateCardSkeleton from '@/components/ui/fallbacks/candidate-card-skeleton';
 
 export default function Loading() {
-  return <h1>load</h1>;
+  return <CandidateCardSkeleton />;
 }

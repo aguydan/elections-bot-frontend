@@ -3,7 +3,7 @@ import PaginationCardsSkeleton from './pagination-cards-skeleton';
 
 export default async function PaginationSkeleton() {
   return (
-    <Box mb={{ base: '8rem', sm: '8rem' }}>
+    <Box role="status" mb={{ base: '8rem', sm: '8rem' }}>
       <SimpleGrid
         cols={{ base: 1, xss: 2, xs: 3, lg: 4, xl: 5 }}
         spacing="sm"

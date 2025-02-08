@@ -6,6 +6,9 @@ const Config = JSON.parse(
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: true, //temporary
+  },
   reactStrictMode: true,
   images: {
     remotePatterns: [

@@ -6,7 +6,6 @@ import PaginationTable from '@/components/ui/pagination/pagination-table';
 import { Suspense } from 'react';
 import PaginationSkeleton from '@/components/ui/pagination/pagination-skeleton';
 import Pagination from '@/components/ui/pagination/pagination';
-import ToastProvider from '@/components/providers/toast-provider';
 
 export default function Page({
   searchParams,
